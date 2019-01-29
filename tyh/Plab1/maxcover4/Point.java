@@ -32,6 +32,6 @@ class Point {
         return Math.sqrt((x-q.x)*(x-q.x)+(y-q.y)*(y-q.y));
     }
     public boolean inCircle(Circle c) {
-        return Math.abs(this.distanceTo(c.center)-c.radius)<0.0000001;
+        return this.distanceTo(c.center)<=c.radius;
     }
 }

@@ -11,6 +11,7 @@ public class Main {
         int max = 0;
         for(int i=0;i<n-1;i++) {
             for(int j=i+1;j<n;j++) {
+				if(pts[i].distanceTo(pts[j])>2) continue;
                 Circle c = new Circle(pts[i].move(pts[j]), 1);
 //                System.out.println(c);
                 int count = 0;

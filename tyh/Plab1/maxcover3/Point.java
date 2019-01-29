@@ -27,4 +27,8 @@ class Point {
         double yy = m.y+d*Math.sin(theta);
         return new Point(Math.abs(xx)<0.0001?0:xx,Math.abs(yy)<0.0001?0:yy);
     }
+    public double distanceTo(Point q) {
+//        System.out.println("distance from "+this.toString()+" to "+q.toString()+" is "+ Math.sqrt((x-q.x)*(x-q.x)+(y-q.y)*(y-q.y)));
+        return Math.sqrt((x-q.x)*(x-q.x)+(y-q.y)*(y-q.y));
+    }
 }
