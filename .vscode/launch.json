@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Circle",
+            "request": "launch",
+            "mainClass": "Circle",
+            "projectName": "ay1819sem2-cs2030_2441b52b"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - DiskCoverage",
             "request": "launch",
             "mainClass": "DiskCoverage"
