@@ -1,0 +1,565 @@
+<h3>Cruise Loaders</h3>
+
+<p><b>Topic Coverage</b>
+<ul>
+<li>Inheritance</li>
+<li>Polymorphism</li>
+<li>Method overriding</li>
+<li>String formatting</li>
+</ul>
+
+<h3>Problem Description</h3>
+
+<p>The Kent Ridge Cruise Centre has just opened and <!-- as NUS undergraduates, -->
+you are required to design a program to determine how much equipment 
+to buy based on a given daily cruise schedule.
+There can be up to 30 cruises that can arrive in a day. 
+Each cruise ship can be one of two types:
+<ul>
+  <li>Normal Cruise:
+    <ul>
+      <li>Takes 30min for a loader to fully load</li>
+      <li>Requires only one loader</li>
+    </ul>
+  </li>
+  <li>Big Cruise (with a cruise code that starts with 'B'):
+    <ul>
+      <li>Takes 60min for loaders to fully load</li>
+      <li>Requires two loaders</li>
+    </ul>
+  </li>
+</ul>
+
+<p>
+  Furthermore, as the Cruise Centre wants to go green, their policy states that
+  every third loader purchased must be a loader made from recycled materials 
+  (referred to as a recycled loader), which undergoes maintenance for
+  one hour after each service. The recycled loader is unable to serve a cruise 
+  during the maintenance period.
+</p>
+
+<p>
+  The program determines the number of loaders and the allocation schedule by the 
+  following steps (sub-optimal):
+  <ul>
+    <li>
+      For each cruise, check through the inventory of loaders, starting from the loader 
+      first purchased and so on.
+    </li>
+    <li>The first (or first two) loaders available will be used to serve the cruise.</li>
+    <li>
+      If there are not enough loaders, purchase a new one(s), and that loader(s) will 
+      be used to serve the cruise.</li>
+    <li>Every third loader purchased must be a recycled loader.</li>
+  </ul>
+</p>
+
+<h3>Task</h3>
+
+<p>
+  Write a program that reads as input the number of cruises in the schedule as an integer, followed by a list of cruises 
+  that will arrive for that day.
+  <br>
+  <br>
+  The program will output 
+  <ul>
+    <li>The number of cruises</li>
+    <li>The number of big cruises</li>
+    <li>The number of loaders required</li>
+    <li>The number of recycled loaders required</li>
+    <li>The loader allocation schedule</li>
+    <li>The recycled loader allocation schedule</li>
+  </ul>
+</p>
+
+
+<p>
+  Take note of the following assumptions:
+  <ul>
+    <li>Input cruises are presented chronologically by arrival time</li>
+	<li>There can be up to 30 cruises in one day</li>
+	<li>There are no duplicate cruises in the input</li>
+  </ul>
+</p>
+
+<p>
+Although the solution to this problem can be implemented procedurally, you should learnt to model the solution using an object-oriented approach instead.
+</p>
+
+<p>This task is divided into five levels.
+You need to complete <b>ALL</b> levels.
+</p>
+
+<p><table border=1 cellpadding=10>
+
+<tr><td><h4>Level 1</h4>
+
+<p>
+  <big><strong>Represent a Cruise</strong></big>
+</p>
+
+<p>Write a program that reads in the number of cruises that arrive in a particular day, and the corresponding cruise schedule.<br>
+Then, print out the cruise schedule in the format as <tt>cruiseCode@time</tt>.
+As an example, <tt>A1234@1330</tt> denotes that cruise A1234 arrives at 1330hrs.
+
+<p>The following is a sample run of the program.  
+User input is <u>underlined</u>.
+
+<p><table border=1 width=300>
+
+<tr><td><pre>
+$ java Main
+<u>1<br>A1234 0</u>
+A1234@0000
+</pre>
+
+<tr><td><pre>
+$ java Main
+<u>6
+A1111 0900</u>
+A1111@0900
+<u>B1112 0901</u>
+B1112@0901
+<u>B1113 0940</u>
+B1113@0940
+<u>C2030 1000</u>
+C2030@1000
+<u>B1115 1030</u>
+B1115@1030
+<u>D1115 1130</u>
+D1115@1130
+</pre>
+
+</table>
+
+<!--
+<p>Click <a href="">here</a> to submit to CodeCrunch.
+-->
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>$ java Main < test.in | diff - test1.out</pre>
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>$ jar cvf cruise1.jar *.java<br>$ mkdir cruise1<br>$ cp *.java cruise1<br>$ cp cruise1.jar cruise1</pre>
+
+<tr><td><h4>Level 2</h4>
+
+<p>
+  <big><strong>Find the allocation schedule for loaders</strong></big>
+</p>
+
+<p>Write a program that reads in the number of cruises that arrive in a particular day, and the corresponding cruise schedule.<br>
+Then, print out the allocation schedule for each loader.<br>
+Ensure that each line denoting the cruise served is prefixed with four spaces.<br>
+In this level, all cruises (even those with codes that begin with 'B') will be taken as a normal cruise.<br>
+The Cruise Centre's go-green policy has not been in place as of yet. All loaders purchased are not recycled.
+
+<p>The following is a sample run of the program.  
+User input is <u>underlined</u>.
+
+<p><table border=1 width=300>
+
+<tr><td><pre>
+$ java Main
+<u>1<br>A1234 0</u>
+Loader 1 serves:
+    A1234@0000
+</pre>
+
+<tr><td><pre>
+$ java Main
+<u>6
+A1111 0900
+B1112 0901
+B1113 0940
+C2030 1000
+B1115 1030
+D1115 1130</u>
+Loader 1 serves:
+    A1111@0900
+    B1113@0940
+    B1115@1030
+    D1115@1130
+Loader 2 serves:
+    B1112@0901
+    C2030@1000
+</pre>
+
+</table>
+<!--
+<p>Click <a href="">here</a> to submit to CodeCrunch.
+-->
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>$ java Main < test.in | diff - test2.out</pre>
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>$ jar cvf cruise2.jar *.java<br>$ mkdir cruise2<br>$ cp *.java cruise2<br>$ cp cruise2.jar cruise2</pre>
+
+
+
+
+<tr><td><h4>Level 3</h4>
+
+<p>
+  <big><strong>Serve Big Cruises</strong></big>
+</p>
+
+<p>Write a program that reads in the number of cruises that arrive in a particular day, and the corresponding cruise schedule.<br>
+Then, print out the allocation schedule for each loader.<br>Big cruises require two loaders and 60 minutes to serve.
+
+<p>The following is a sample run of the program.  
+User input is <u>underlined</u>.
+
+<p><table border=1 width=300>
+
+<tr><td><pre>
+$ java Main
+<u>1
+B1111 0</u>
+Loader 1 serves:
+    B1111@0000
+Loader 2 serves:
+    B1111@0000
+</pre>
+
+<tr><td><pre>
+$ java Main
+<u>6
+A1111 0900
+B1112 0901
+B1113 0940
+C2030 1000
+B1115 1030
+D1115 1130</u>
+Loader 1 serves:
+    A1111@0900
+    B1113@0940
+    D1115@1130
+Loader 2 serves:
+    B1112@0901
+    B1115@1030
+Loader 3 serves:
+    B1112@0901
+    B1115@1030
+Loader 4 serves:
+    B1113@0940
+Loader 5 serves:
+    C2030@1000
+</pre>
+
+</table>
+
+<!--
+<p>Click <a href="">here</a> to submit to CodeCrunch.
+-->
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>$ java Main < test.in | diff - test3.out</pre>
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>$ jar cvf cruise3.jar *.java<br>$ mkdir cruise3<br>$ cp *.java cruise3<br>$ cp cruise3.jar cruise3</pre>
+
+
+<tr><td><h4>Level 4</h4>
+
+<p>
+  <big><strong>Purchase recycled loaders</strong></big>
+</p>
+
+<p>Write a program that reads in the number of cruises that arrive in a particular day, and the corresponding cruise schedule.<br>
+Then, print out the allocation schedule for normal loaders, followed by the allocation schedule for recycled loaders.<br>
+Note that every third loader purchased must be recycled, and recycled loaders require 60 minutes of maintenance after each cruise served.
+
+<p>The following is a sample run of the program.  
+User input is <u>underlined</u>.
+
+<p><table border=1 width=300>
+<tr><td><pre>
+$ java Main
+<u>4
+A1111 1300
+B1112 1300
+C1113 1359
+B1114 1400</u>
+Loader 1 serves:
+    A1111@1300
+    C1113@1359
+Loader 2 serves:
+    B1112@1300
+    B1114@1400
+Loader 4 serves:
+    B1114@1400
+Loader 3 (recycled) serves:
+    B1112@1300
+</pre>
+<tr><td><pre>
+$ java Main
+<u>6
+A1111 0900
+B1112 0901
+B1113 0940
+C2030 1000
+B1115 1030
+D1115 1130</u>
+Loader 1 serves:
+    A1111@0900
+    B1113@0940
+    D1115@1130
+Loader 2 serves:
+    B1112@0901
+    B1115@1030
+Loader 4 serves:
+    B1113@0940
+Loader 5 serves:
+    C2030@1000
+    B1115@1030
+Loader 3 (recycled) serves:
+    B1112@0901
+</pre>
+
+<tr><td><pre>
+$ java Main
+<u>10
+A1234 0000
+B1235 0001
+B1236 0002
+B1237 0003
+C1238 0030
+V1239 0031
+B1240 0032
+X1241 0100
+B1242 0200
+B1243 0300</u>
+Loader 1 serves:
+    A1234@0000
+    C1238@0030
+    X1241@0100
+    B1242@0200
+    B1243@0300
+Loader 2 serves:
+    B1235@0001
+    B1242@0200
+    B1243@0300
+Loader 4 serves:
+    B1236@0002
+Loader 5 serves:
+    B1236@0002
+Loader 7 serves:
+    B1237@0003
+Loader 8 serves:
+    V1239@0031
+Loader 10 serves:
+    B1240@0032
+Loader 3 (recycled) serves:
+    B1235@0001
+Loader 6 (recycled) serves:
+    B1237@0003
+Loader 9 (recycled) serves:
+    B1240@0032
+</pre>
+
+</table>
+
+<!--
+<p>Click <a href="">here</a> to submit to CodeCrunch.
+-->
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>$ java Main < test.in | diff - test4.out</pre>
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>$ jar cvf cruise4.jar *.java<br>$ mkdir cruise4<br>$ cp *.java cruise4<br>$ cp cruise4.jar cruise4</pre>
+
+<tr><td><h4>Level 5</h4>
+<p>
+  <big><strong>Print statistics</strong></big>
+</p>
+<p>Write a program that reads in the number of cruises that arrive in a particular day, and the corresponding cruise schedule.<br>
+Then, print out the:
+<ul>
+  <li>number of cruises</li>
+  <li>number of big cruises</li>
+  <li>number of loaders</li>
+  <li>number of recycled loaders</li>
+  <li>allocation schedule for normal loaders</li>
+  <li>allocation schedule for recycled loaders</li>
+</ul>
+  
+<p>Note the following:
+<ul>
+  <li>The width of the containing box should be 36 characters.</li>
+  <li>Thick horizontal borders should use '='</li>
+  <li>Thin horizontal borders should use '-'</li>
+  <li>There should at least be a space between the first and last characters of each line</li>
+  <li>Use the format specifier %3d to print integers of width = 3</li>
+</ul>
+<p>The following is a sample run of the program.  
+User input is <u>underlined</u>.
+
+<p><table border=1 width=300>
+
+<tr><td><pre>
+$ java Main
+<u>1
+A1111 1300</u>
++==================================+
+| Cruise Statistics                |
++----------------------------------+
+| Number of normal cruises   =   1 |
+| Number of big cruises      =   0 |
++==================================+
+| Equipment statistics             |
++----------------------------------+
+| Number of loaders          =   1 |
+| Number of recycled loaders =   0 |
++==================================+
+| Loader 1 serves:                 |
+|     A1111@1300                   |
++==================================+
+</pre>
+
+<tr><td><pre>
+$ java Main
+<u>4
+A1111 1300
+B1112 1300
+C1113 1359
+B1114 1400</u>
++==================================+
+| Cruise Statistics                |
++----------------------------------+
+| Number of normal cruises   =   2 |
+| Number of big cruises      =   2 |
++==================================+
+| Equipment statistics             |
++----------------------------------+
+| Number of loaders          =   3 |
+| Number of recycled loaders =   1 |
++==================================+
+| Loader 1 serves:                 |
+|     A1111@1300                   |
+|     C1113@1359                   |
++==================================+
+| Loader 2 serves:                 |
+|     B1112@1300                   |
+|     B1114@1400                   |
++==================================+
+| Loader 4 serves:                 |
+|     B1114@1400                   |
++==================================+
+| Loader 3 (recycled) serves:      |
+|     B1112@1300                   |
++==================================+
+</pre>
+
+<tr><td><pre>
+$ java Main
+<u>6
+A1111 0900
+B1112 0901
+B1113 0940
+C2030 1000
+B1115 1030
+D1115 1130</u>
++==================================+
+| Cruise Statistics                |
++----------------------------------+
+| Number of normal cruises   =   3 |
+| Number of big cruises      =   3 |
++==================================+
+| Equipment statistics             |
++----------------------------------+
+| Number of loaders          =   4 |
+| Number of recycled loaders =   1 |
++==================================+
+| Loader 1 serves:                 |
+|     A1111@0900                   |
+|     B1113@0940                   |
+|     D1115@1130                   |
++==================================+
+| Loader 2 serves:                 |
+|     B1112@0901                   |
+|     B1115@1030                   |
++==================================+
+| Loader 4 serves:                 |
+|     B1113@0940                   |
++==================================+
+| Loader 5 serves:                 |
+|     C2030@1000                   |
+|     B1115@1030                   |
++==================================+
+| Loader 3 (recycled) serves:      |
+|     B1112@0901                   |
++==================================+
+</pre>
+
+<tr><td><pre>
+$ java Main
+<u>10
+A1234 0000
+B1235 0001
+B1236 0002
+B1237 0003
+C1238 0030
+V1239 0031
+B1240 0032
+X1241 0100
+B1242 0200
+B1243 0300</u>
++==================================+
+| Cruise Statistics                |
++----------------------------------+
+| Number of normal cruises   =   4 |
+| Number of big cruises      =   6 |
++==================================+
+| Equipment statistics             |
++----------------------------------+
+| Number of loaders          =   7 |
+| Number of recycled loaders =   3 |
++==================================+
+| Loader 1 serves:                 |
+|     A1234@0000                   |
+|     C1238@0030                   |
+|     X1241@0100                   |
+|     B1242@0200                   |
+|     B1243@0300                   |
++==================================+
+| Loader 2 serves:                 |
+|     B1235@0001                   |
+|     B1242@0200                   |
+|     B1243@0300                   |
++==================================+
+| Loader 4 serves:                 |
+|     B1236@0002                   |
++==================================+
+| Loader 5 serves:                 |
+|     B1236@0002                   |
++==================================+
+| Loader 7 serves:                 |
+|     B1237@0003                   |
++==================================+
+| Loader 8 serves:                 |
+|     V1239@0031                   |
++==================================+
+| Loader 10 serves:                |
+|     B1240@0032                   |
++==================================+
+| Loader 3 (recycled) serves:      |
+|     B1235@0001                   |
++==================================+
+| Loader 6 (recycled) serves:      |
+|     B1237@0003                   |
++==================================+
+| Loader 9 (recycled) serves:      |
+|     B1240@0032                   |
++==================================+
+</pre>
+
+</table>
+
+<!--
+<p>Click <a href="">here</a> to submit to CodeCrunch.
+-->
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>$ java Main < test.in | diff - test5.out</pre>
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>$ jar cvf cruise5.jar *.java<br>$ mkdir cruise5<br>$ cp *.java cruise5<br>$ cp cruise5.jar cruise5</pre>
+</table>
