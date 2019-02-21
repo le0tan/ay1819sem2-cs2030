@@ -1,7 +1,0 @@
-/**
- * EventSimulator
- */
-public class EventSimulator {
-
-    
-}
