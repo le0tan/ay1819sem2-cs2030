@@ -3,34 +3,41 @@
  */
 public class Customer {
 
-    private static int numOfCustomers = 0;
+    public static final int ARRIVES = 0;
+    public static final int SERVED = 1;
+    public static final int WAITS = 2;
+    public static final int LEAVES = 3;
+    public static final int DONE = 4;
     private double timeOfArrival;
-    private int customerID;
-    private boolean served;
-    private Double timeOfService;
+    private double timeOfService;
+    private double currentStatusTime;
+    public int status;
 
     public Customer(double time) {
-        numOfCustomers++;
-        customerID = numOfCustomers;
         timeOfArrival = time;
-        served = false;
-        timeOfService = null;
-    }
-
-    public static int getNumOfCustomers() {
-        return numOfCustomers;
+        timeOfService = -1.0;
+        currentStatusTime = time;
+        status = 0;
     }
 
     public double getTimeOfArrival() {
         return timeOfArrival;
     }
 
-    public int getID() {
-        return customerID;
+    public double getTimeOfService() {
+        return timeOfService;
     }
 
-    public void serve(double time) {
-        served = true;
+    public void setTimeOfService(double time) {
         timeOfService = time;
     }
+
+    public void setCurrentStatusTime(double time) {
+        currentStatusTime = time;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
 }
