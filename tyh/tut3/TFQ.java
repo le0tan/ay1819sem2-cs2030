@@ -11,8 +11,7 @@ public class TFQ extends Question {
     }
 
     void getAnswer() throws InvalidTFQException{
-        System.out.print(question + " ");
-        answer = (new Scanner(System.in)).next().charAt(0);
+        char answer = askQuestion();
         if (answer != 'T' && answer != 'F') {
             throw new InvalidTFQException("Invalid TFQ answer");
         }

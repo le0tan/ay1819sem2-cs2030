@@ -11,8 +11,7 @@ public class MCQ extends Question {
     }
 
     void getAnswer() throws InvalidMCQException{
-        System.out.print(question + " ");
-        answer = (new Scanner(System.in)).next().charAt(0);
+        char answer = askQuestion();
         if (answer < 'A' || answer > 'E') {
             throw new InvalidMCQException("Invalid MCQ answer");
         }
