@@ -11,6 +11,10 @@ public class Server {
     private double nextServiceTime;
     private Customer servingCustomer;
 
+    /**
+     * Constructor for Server object.
+     * The ID of the server is self-incremental.
+     */
     public Server() {
         isServing = false;
         isWaiting = false;
@@ -33,10 +37,10 @@ public class Server {
         boolean shouldReturn = true;
         switch (customer.status) {
             case Customer.ARRIVES:
-                if(customer.getTimeOfArrival() >= nextServiceTime) {
+                if (customer.getTimeOfArrival() >= nextServiceTime) {
                     returnedCustomer.setStatus(Customer.SERVED);
                     returnedCustomer.setServer(this);
-                } else if(!isWaiting) {
+                } else if (!isWaiting) {
                     returnedCustomer.setStatus(Customer.WAITS);
                     returnedCustomer.setServer(this);
                 } else {
@@ -45,7 +49,9 @@ public class Server {
                 break;
             case Customer.SERVED:
                 isServing = true;
-                if(isWaiting) isWaiting = false;
+                if (isWaiting) {
+                    isWaiting = false;
+                }
                 servingCustomer = customer;
                 nextServiceTime = customer.getCurrentStatusTime() + DURATION_OF_SERVICE;
                 returnedCustomer.setTimeOfService(customer.getCurrentStatusTime());
@@ -70,7 +76,7 @@ public class Server {
                 shouldReturn = false;
                 break;
         }
-        if(shouldReturn) {
+        if (shouldReturn) {
             return returnedCustomer;
         } else {
             return null;
