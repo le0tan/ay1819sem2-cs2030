@@ -1,6 +1,3 @@
-/**
- * Server
- */
 public class Server {
 
     public static final double DURATION_OF_SERVICE = 1.0;
@@ -24,14 +21,26 @@ public class Server {
         serverID = numOfServers;
     }
 
+    /**
+     * Getter for isServing property.
+     * @return whether the server is serving
+     */
     public boolean isServing() {
         return isServing;
     }
 
+    /**
+     * Getter for isWaiting property.
+     * @return whether there is a customer waiting for this server
+     */
     public boolean isWaiting() {
         return isWaiting;
     }
 
+    /**
+     * Serve a customer, return the served customer if successful.
+     * @return the customer that's served (with changed status and properties)
+     */
     public Customer serve(Customer customer) {
         Customer returnedCustomer = customer.clone();
         boolean shouldReturn = true;

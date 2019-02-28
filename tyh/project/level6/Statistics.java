@@ -1,6 +1,3 @@
-/**
- * Statistics
- */
 public class Statistics {
 
     public int numOfCustomersServed;

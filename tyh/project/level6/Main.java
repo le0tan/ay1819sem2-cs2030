@@ -5,7 +5,7 @@ public class Main {
 
     /**
      * Main method that runs the simulator.
-     * @param command line arguments
+     * @param args commandline arguments
      */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -15,7 +15,7 @@ public class Main {
         }
         while (es.nextStep()) {
         }
-        PriorityQueue<Customer> result = es.getResult();
+        PriorityQueue<Event> result = es.getResult();
         while (!result.isEmpty()) {
             System.out.println(result.poll());
         }

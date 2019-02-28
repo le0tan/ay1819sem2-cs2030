@@ -2,7 +2,7 @@ import java.util.PriorityQueue;
 
 public class EventSimulator {
     private PriorityQueue<Customer> customers;
-    private PriorityQueue<Customer> result;
+    private PriorityQueue<Event> result;
     // private Server server;
     private Server[] servers;
     public Statistics statistics;
@@ -11,7 +11,7 @@ public class EventSimulator {
      * Constructor for the event simulator.
      * Initializing the properties and create a proper-sized
      * array for the servers.
-     * @param number of servers
+     * @param numOfServers number of servers
      */
     public EventSimulator(int numOfServers) {
         customers = new PriorityQueue<>();
@@ -25,7 +25,7 @@ public class EventSimulator {
 
     /**
      * Add a customer to the simulator. (i.e. it arrives)
-     * @param object representing this customer (i.e. it has status "arrives")
+     * @param customer object representing this customer (i.e. it has status "arrives")
      */
     public void addCustomer(Customer customer) {
         customers.add(customer);
@@ -41,7 +41,10 @@ public class EventSimulator {
         } else {
             Customer currentCustomer = customers.poll();
             Customer toBeAdded = null;
-            result.add(currentCustomer);
+            result.add(new Event(currentCustomer.getCurrentStatusTime(),
+                                 currentCustomer.getCustomerID(),
+                                 currentCustomer.status,
+                                 currentCustomer.getServer()));
 
             if (currentCustomer.status == Customer.ARRIVES) {
                 boolean arrivedAndNotLeft = false;
@@ -90,7 +93,7 @@ public class EventSimulator {
      * Get the output result.
      * @return a priority queue storing the events as Customer objects
      */
-    public PriorityQueue<Customer> getResult() {
+    public PriorityQueue<Event> getResult() {
         return result;
     }
 }

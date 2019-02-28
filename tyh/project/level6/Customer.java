@@ -68,36 +68,6 @@ public class Customer implements Comparable<Customer> {
             }
         }
     }
-
-    /**
-     * Treating Customer object as an event log, print out the event info.
-     * @return a string with event time, customer ID and event itself
-     */
-    @Override
-    public String toString() {
-        return String.format("%.3f %d %s", currentStatusTime, customerID, statusToString());
-    }
-
-    /**
-     * Format the status according to the sample output.
-     * @return status + serverID (if necessary)
-     */
-    private String statusToString() {
-        switch (status) {
-            case DONE:
-                return String.format("done serving by %d", server.serverID);
-            case ARRIVES:
-                return "arrives";
-            case LEAVES:
-                return "leaves";
-            case WAITS:
-                return String.format("waits to be served by %d", server.serverID);
-            case SERVED:
-                return String.format("served by %d", server.serverID);
-            default:
-                return "error";
-        }
-    }
     
     /**
      * For saving Customer object as an event in the final output,
