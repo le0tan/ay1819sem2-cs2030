@@ -62,8 +62,9 @@ public class Server {
                     isWaiting = false;
                 }
                 servingCustomer = customer;
-                nextServiceTime = customer.getCurrentStatusTime() + customer.getDurationOfService();
-                returnedCustomer = customer.setTimeOfService(customer.getCurrentStatusTime()).setCurrentStatusTime(nextServiceTime).setStatus(Customer.DONE);
+                double serviceTime = EventSimulator.rg.genServiceTime();
+                nextServiceTime = customer.getCurrentStatusTime() + serviceTime;
+                returnedCustomer = customer.setTimeOfService(customer.getCurrentStatusTime()).setCurrentStatusTime(nextServiceTime).setStatus(Customer.DONE).setDurationOfService(serviceTime);
                 break;
             case Customer.DONE:
                 isServing = false;

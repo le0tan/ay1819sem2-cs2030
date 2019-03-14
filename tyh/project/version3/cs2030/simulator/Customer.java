@@ -25,7 +25,7 @@ public class Customer implements Comparable<Customer> {
      * Constructor for initializing the customer array.
      * @param time the time of arrival
      */
-    public Customer(double time, double duration) {
+    public Customer(double time) {
         this.timeOfArrival = time;
         this.timeOfService = -1.0;
         this.currentStatusTime = time;
@@ -33,7 +33,7 @@ public class Customer implements Comparable<Customer> {
         numOfCustomers++;
         this.customerID = numOfCustomers;
         this.server = null;
-        this.durationOfService = duration;
+        // this.durationOfService = duration;
         // System.out.println(duration);
     }
 
@@ -160,5 +160,9 @@ public class Customer implements Comparable<Customer> {
      */
     public Customer setServer(Server server) {
         return new Customer(this.timeOfArrival, this.timeOfService, this.currentStatusTime, this.customerID, this.status, server, this.durationOfService);
+    }
+
+    public Customer setDurationOfService(double time) {
+        return new Customer(this.timeOfArrival, this.timeOfService, this.currentStatusTime, this.customerID, this.status, this.server, time);
     }
 }

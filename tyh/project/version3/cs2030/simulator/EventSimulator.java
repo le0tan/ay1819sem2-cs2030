@@ -8,7 +8,7 @@ public class EventSimulator {
     // private Server server;
     private Server[] servers;
     public Statistics statistics;
-    RandomGenerator rg;
+    public static RandomGenerator rg;
     double currentTime = 0.0;
 
     /**
@@ -30,7 +30,7 @@ public class EventSimulator {
 
 
     public void addCustomer() {
-        customers.add(new Customer(currentTime, rg.genServiceTime()));
+        customers.add(new Customer(currentTime));
         // customers.add(new Customer(currentTime, Server.DURATION_OF_SERVICE));
         currentTime += rg.genInterArrivalTime();
     }
