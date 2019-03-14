@@ -24,7 +24,7 @@ public class Main {
         double arrivalRate = sc.nextDouble();
         double serviceRate = sc.nextDouble();
         EventSimulator es = new EventSimulator(numOfServers, seed, arrivalRate, serviceRate);
-        for(int i=0;i<numOfCustomers;i++) {
+        for (int i = 0; i < numOfCustomers; i++) {
             es.addCustomer();
         }
         while (es.nextStep()) {

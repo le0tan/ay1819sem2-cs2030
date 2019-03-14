@@ -8,7 +8,7 @@ public class EventSimulator {
     // private Server server;
     private Server[] servers;
     public Statistics statistics;
-    public static RandomGenerator rg;
+    public static RandomGenerator randomGenerator;
     double currentTime = 0.0;
 
     /**
@@ -25,14 +25,17 @@ public class EventSimulator {
             servers[i] = new Server();
         }
         statistics = new Statistics();
-        rg = new RandomGenerator(seed, lambda, mu);
+        randomGenerator = new RandomGenerator(seed, lambda, mu);
     }
 
 
+    /**
+     * Add a new customer to the simulator.
+     */
     public void addCustomer() {
         customers.add(new Customer(currentTime));
         // customers.add(new Customer(currentTime, Server.DURATION_OF_SERVICE));
-        currentTime += rg.genInterArrivalTime();
+        currentTime += randomGenerator.genInterArrivalTime();
     }
 
     /**
@@ -69,7 +72,7 @@ public class EventSimulator {
                     }
                 }
                 if (!arrivedAndNotLeft) {
-                    toBeAdded = currentCustomer.setStatus(Customer.LEAVES);
+                    toBeAdded = currentCustomer.withStatus(Customer.LEAVES);
                 }
             } else {
                 if (currentCustomer.getServer() != null) {

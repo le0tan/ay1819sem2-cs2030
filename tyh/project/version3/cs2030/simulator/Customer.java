@@ -33,8 +33,6 @@ public class Customer implements Comparable<Customer> {
         numOfCustomers++;
         this.customerID = numOfCustomers;
         this.server = null;
-        // this.durationOfService = duration;
-        // System.out.println(duration);
     }
 
     /**
@@ -75,15 +73,6 @@ public class Customer implements Comparable<Customer> {
         }
     }
     
-    /**
-     * For saving Customer object as an event in the final output,
-     * we need to clone the object itself.
-     * @return a cloned Customer object
-     */
-    public Customer clone() {
-        return new Customer(timeOfArrival, timeOfService, 
-                            currentStatusTime, customerID, status, server, durationOfService);
-    }
 
     /**
      * Returns the time of arrival.
@@ -125,44 +114,72 @@ public class Customer implements Comparable<Customer> {
         return server;
     }
 
+    /**
+     * Returns the duration of service.
+     * @return the duration of service.
+     */
     public double getDurationOfService() {
         // System.out.println(durationOfService);
         return durationOfService;
     }
 
     /**
-     * Returns the time of service.
+     * Add the time of service to current customer,
+     * returns the new customer object.
      * @param time of service
+     * @return the new Customer object
      */
-    public Customer setTimeOfService(double time) {
-        return new Customer(this.timeOfArrival, time, this.currentStatusTime, this.customerID, this.status, this.server, this.durationOfService);
+    public Customer withTimeOfService(double time) {
+        return new Customer(this.timeOfArrival, time, 
+                            this.currentStatusTime, this.customerID, 
+                            this.status, this.server, this.durationOfService);
     }
 
     /**
-     * Set the time of the event.
-     * @param time of the event
+     * Add the current status time to current customer,
+     * returns the new customer object.
+     * @param time current status time
+     * @return the new Customer object
      */
-    public Customer setCurrentStatusTime(double time) {
-        return new Customer(this.timeOfArrival, this.timeOfService, time, this.customerID, this.status, this.server, this.durationOfService);
+    public Customer withCurrentStatusTime(double time) {
+        return new Customer(this.timeOfArrival, this.timeOfService, 
+                            time, this.customerID, this.status, 
+                            this.server, this.durationOfService);
     }
 
     /**
-     * Set the status of the customer.
-     * @param status of the customer
+     * Add the status to current customer,
+     * returns the new customer object.
+     * @param status status of the new customer object
+     * @return the new Customer object
      */
-    public Customer setStatus(int status) {
-        return new Customer(this.timeOfArrival, this.timeOfService, this.currentStatusTime, this.customerID, status, this.server, this.durationOfService);
+    public Customer withStatus(int status) {
+        return new Customer(this.timeOfArrival, this.timeOfService, 
+                            this.currentStatusTime, this.customerID, 
+                            status, this.server, this.durationOfService);
     }
 
     /**
-     * Set the server that serves the customer.
-     * @param server that serves the customer
+     * Add the server to current customer,
+     * returns the new customer object.
+     * @param server server of the new customer object
+     * @return the new Customer object
      */
-    public Customer setServer(Server server) {
-        return new Customer(this.timeOfArrival, this.timeOfService, this.currentStatusTime, this.customerID, this.status, server, this.durationOfService);
+    public Customer withServer(Server server) {
+        return new Customer(this.timeOfArrival, this.timeOfService, 
+                            this.currentStatusTime, this.customerID, 
+                            this.status, server, this.durationOfService);
     }
 
-    public Customer setDurationOfService(double time) {
-        return new Customer(this.timeOfArrival, this.timeOfService, this.currentStatusTime, this.customerID, this.status, this.server, time);
+    /**
+     * Add the duration of service to current customer,
+     * returns the new customer object.
+     * @param time duration of service
+     * @return the new Customer object
+     */
+    public Customer withDurationOfService(double time) {
+        return new Customer(this.timeOfArrival, this.timeOfService, 
+                            this.currentStatusTime, this.customerID, 
+                            this.status, this.server, time);
     }
 }

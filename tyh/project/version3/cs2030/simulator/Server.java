@@ -49,11 +49,11 @@ public class Server {
         switch (customer.status) {
             case Customer.ARRIVES:
                 if (customer.getTimeOfArrival() >= nextServiceTime) {
-                    returnedCustomer = customer.setStatus(Customer.SERVED).setServer(this);
+                    returnedCustomer = customer.withStatus(Customer.SERVED).withServer(this);
                 } else if (!isWaiting) {
-                    returnedCustomer = customer.setStatus(Customer.WAITS).setServer(this);
+                    returnedCustomer = customer.withStatus(Customer.WAITS).withServer(this);
                 } else {
-                    returnedCustomer = customer.setStatus(Customer.LEAVES);
+                    returnedCustomer = customer.withStatus(Customer.LEAVES);
                 }
                 break;
             case Customer.SERVED:
@@ -62,9 +62,12 @@ public class Server {
                     isWaiting = false;
                 }
                 servingCustomer = customer;
-                double serviceTime = EventSimulator.rg.genServiceTime();
+                double serviceTime = EventSimulator.randomGenerator.genServiceTime();
                 nextServiceTime = customer.getCurrentStatusTime() + serviceTime;
-                returnedCustomer = customer.setTimeOfService(customer.getCurrentStatusTime()).setCurrentStatusTime(nextServiceTime).setStatus(Customer.DONE).setDurationOfService(serviceTime);
+                returnedCustomer = customer.withTimeOfService(customer.getCurrentStatusTime())
+                                           .withCurrentStatusTime(nextServiceTime)
+                                           .withStatus(Customer.DONE)
+                                           .withDurationOfService(serviceTime);
                 break;
             case Customer.DONE:
                 isServing = false;
@@ -73,7 +76,8 @@ public class Server {
                 break;
             case Customer.WAITS:
                 isWaiting = true;
-                returnedCustomer = customer.setStatus(Customer.SERVED).setCurrentStatusTime(nextServiceTime);
+                returnedCustomer = customer.withStatus(Customer.SERVED)
+                                           .withCurrentStatusTime(nextServiceTime);
                 break;
             case Customer.LEAVES:
                 shouldReturn = false;
