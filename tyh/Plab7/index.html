@@ -1,0 +1,302 @@
+<h3>Your Own Finite Integer Stream</h3>
+
+<h4>Problem Description</h4>
+
+<p>To understand declarative programming using streams, the best way is to come up with your own stream operations.
+In this exercise, you will develop a finite <tt>int</tt> stream, much like how Java's <tt>IntStream</tt> works, accept that it is finite, and eager-evaluated.
+
+<h4>The Task</h4>
+
+You are to design your own <tt>MyIntStream</tt> with the following requirements.
+Note that you are <b>not allowed</b> to import anything from <tt>java.util.stream</tt>
+
+<ul>
+<!-- <li>Create the package <tt>cs2030.mystream</tt> for your implementation -->
+<li>Create the <tt>MyIntStream</tt> interface and the <tt>MyIntStreamImpl</tt> implementation
+<li>Use a <tt>List<Integer></tt> to represent the stream elements
+<li>Write an appropriate <tt>toString()</tt> method to keep track of the stream elements
+</ul>
+
+<p>This task is divided into several levels. Read through all the levels to see how the different levels are related. <b>You need to complete all levels</b>.
+
+<p>Just remember to:
+
+<ul>
+<!--
+<li>check for output format correctness using the <tt>diff</tt> utility (see specific level for usage details). Note that only one test case is provided for this;
+-->
+<li>archive and save a copy of all source files into the appropriate level directory (see specific level for usage details).
+</ul>
+
+
+<p>
+<table border=1 cellpadding=10 width=800>
+
+<tr><td><h4>Level 1</h4>
+
+<p>Start the stream pipeline via the following data sources:
+<ul>
+<li><tt>MyIntStream.of(int... values)</tt>
+<li><tt>MyIntStream.range(int start, int end)</tt>
+<li><tt>MyIntStream.rangeClosed(int start, int end)</tt>
+</ul>
+
+<p>In order to prevent constructs like: <tt>MyIntStream.of(1,2,3).range(1,3)</tt>, you need to implement the above methods as <tt>static</tt> methods in the interface.  
+More specifically, construct the appropriate list of elements within a <tt>MyIntStreamImpl</tt> object and return it.
+
+<p>Note also that
+<ul>
+<li>Every stream operation generates a new stream of elements
+<li>An empty stream is denoted by an empty list
+<li>Since the stream elements are stored in a list and eagerly evaluated through each stream operation, the stream <b>can actually be</b> consumed multiple times
+</ul>
+
+
+<p>Test the methods by writing a suitable test class, or using jshell.
+You may even write a jshell script.  
+<!--
+For example, a jshell session using the following script (say, <tt>intstream1.jsh</tt>),
+-->
+
+<pre>
+jshell&gt; MyIntStream.of(1, 2, 3)
+.. ==&gt; [1, 2, 3]
+
+jshell&gt; MyIntStream.of(new int[]{1, 2, 3})
+.. ==&gt; [1, 2, 3]
+
+jshell&gt; MyIntStream.range(1, 10)
+.. ==&gt; [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+jshell&gt; MyIntStream.rangeClosed(1, 10)
+.. ==&gt; [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+jshell&gt; MyIntStream.range(1, 1)
+.. ==&gt; []
+
+jshell&gt; MyIntStream.of(1, 2, 3).range(1, 3)
+|  Error:
+|  illegal static interface method call
+|    the receiver expression should be replaced with the type qualifier 'MyIntStream'
+|  MyIntStream.of(1, 2, 3).range(1, 3)
+|  ^---------------------------------^
+</pre>
+
+<!--
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4404" target="_blank">here</a> 
+to submit to CodeCrunch.
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test1.in | diff - test1.out
+</pre>
+-->
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>
+$ jar cvf intstream1.jar *.java
+$ mkdir intstream1
+$ cp *.java intstream1
+$ cp intstream1.jar intstream1
+</pre>
+
+<p>Verify your jar archive using
+
+<pre>
+$ jar tf ~/intstream1/intstream1.jar
+</pre>
+
+</table>
+
+
+<table border=1 cellpadding=10 width=800>
+<tr><td><h4>Level 2</h4>
+<p>Implement the following <b>terminal</b> operations:
+<ul>
+<li><tt>count()</tt> and <tt>sum()</tt>, that returns a <tt>long</tt> and <tt>int</tt> value respectively.  In particular, <tt>0</tt> is returned when the stream is empty
+<li><tt>average()</tt> that returns an <tt>OptionalDouble</tt> object.
+In the case of <tt>IntStream</tt>, the following expressions
+<pre>
+MyIntStream.range(1,1).average()
+MyIntStream.range(1,2).average()
+</pre>
+would return <tt>OptionalDouble.empty</tt> and <tt>OptionalDouble[1.0]</tt> respectively
+<li><tt>max</tt> and <tt>min</tt>, each returning an <tt>OptionalInt</tt> object
+<li><tt>forEach(IntConsumer action)</tt> that takes as argument an action and performs the action on each stream element
+</ul>
+<!--
+Note that you can use the <tt>getAsDouble()</tt> and <tt>getAsInt()</tt> to obtain the respective <tt>double</tt> and <tt>int</tt> values from an <tt>OptionalDouble</tt> and <tt>OptionalInt</tt> object respectively
+-->
+<p>Test the methods by writing a suitable test class, or using jshell.
+You may even write a jshell script.  
+<!--
+For example, a jshell session using the following script (say, <tt>intstream2.jsh</tt>),
+-->
+<pre>
+jshell&gt; MyIntStream.range(1, 1).count()
+.. ==&gt; 0
+
+jshell&gt; MyIntStream.range(1, 10).count()
+.. ==&gt; 9
+
+jshell&gt; MyIntStream.range(1, 1).sum()
+.. ==&gt; 0
+
+jshell&gt; MyIntStream.range(1, 10).sum()
+.. ==&gt; 45
+
+jshell&gt; MyIntStream.range(1, 1).average()
+.. ==&gt; OptionalDouble.empty
+
+jshell&gt; MyIntStream.range(1, 10).average()
+.. ==&gt; OptionalDouble[5.0]
+
+jshell&gt; MyIntStream.range(1, 1).min()
+.. ==&gt; OptionalMyInt.empty
+
+jshell&gt; MyIntStream.range(1, 10).min()
+.. ==&gt; OptionalMyInt[1]
+
+jshell&gt; MyIntStream.range(1, 1).max()
+.. ==&gt; OptionalMyInt.empty
+
+jshell&gt; MyIntStream.range(1, 10).max()
+.. ==&gt; OptionalMyInt[9]
+</pre>
+
+<!--
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4404" target="_blank">here</a> 
+to submit to CodeCrunch.
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test1.in | diff - test1.out
+</pre>
+-->
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>
+$ jar cvf intstream2.jar *.java
+$ mkdir intstream2
+$ cp *.java intstream2
+$ cp intstream2.jar intstream2
+</pre>
+
+<p>Verify your jar archive using
+
+<pre>
+$ jar tf ~/intstream2/intstream2.jar
+</pre>
+
+</table>
+
+<table border=1 cellpadding=10 width=800>
+<tr><td><h4>Level 3</h4>
+
+<p>Now, implement the following <b>intermediate</b> operations:
+<ul>
+<li><tt>limit(int maxSize)</tt> that returns a <tt>MyIntStream</tt> stream of elements truncated to be no longer than <tt>maxSize</tt> in length
+<li><tt>distinct()</tt> that returns a <tt>MyIntStream</tt> stream of distinct elements. <i>Hint: use a</i> <tt>Set</tt>
+<li><tt>filter(IntPredicate predicate)</tt> that takes as argument a predicate function and returns a <tt>MyIntStream</tt> stream of elements that match the given predicate
+<li><tt>map(IntUnaryOperator mapper)</tt> that takes in a mapper function and returns a <tt>MyIntStream</tt> stream of elements consisting of the results of applying the given function to the stream elements
+</ul>
+
+<p>Test the methods by writing a suitable test class, or using jshell.
+You may even write a jshell script.  
+<!--
+For example, a jshell session using the following script (say, <tt>intstream3.jsh</tt>),
+-->
+<pre>
+jshell&gt; MyIntStream.range(1, 10).limit(5)
+.. ==&gt; [1, 2, 3, 4, 5]
+
+jshell&gt; MyIntStream.range(1, 10).limit(0)
+.. ==&gt; []
+
+jshell&gt; MyIntStream.of(2, 0, 3, 0).distinct()
+.. ==&gt; [2, 0, 3]
+
+jshell&gt; MyIntStream.range(1, 10).filter(x -&gt; x &lt; 5)
+.. ==&gt; [1, 2, 3, 4]
+
+jshell&gt; MyIntStream.range(1, 10).filter(x -&gt; x &lt; 0)
+.. ==&gt; []
+
+jshell&gt; MyIntStream.range(1, 10).map(x -&gt; x / 2)
+.. ==&gt; [0, 1, 1, 2, 2, 3, 3, 4, 4]
+
+jshell&gt; MyIntStream.range(1, 10).map(x -&gt; x / 2).distinct()
+.. ==&gt; [0, 1, 2, 3, 4]
+</pre>
+
+<!--
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4404" target="_blank">here</a> 
+to submit to CodeCrunch.
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test1.in | diff - test1.out
+</pre>
+-->
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>
+$ jar cvf intstream3.jar *.java
+$ mkdir intstream3
+$ cp *.java intstream3
+$ cp intstream3.jar intstream3
+</pre>
+
+<p>Verify your jar archive using
+
+<pre>
+$ jar tf ~/intstream3/intstream3.jar
+</pre>
+
+</table>
+
+
+<table border=1 cellpadding=10 width=800>
+<tr><td><h4>Level 4</h4>
+
+<p>Finally, implement the following two variants of the <tt>reduce</tt> terminal operations:
+<ul>
+<li><tt>reduce(int identity, IntBinaryOperator op)</tt> that takes in an identity value and binary function, and performs a reduction on the stream elements using the identity value and an associative accumulation function. The reduced <tt>int</tt> value is returned
+<li><tt>reduce(IntBinaryOperator op)</tt> that takes in a binary function and performs a reduction on the elements of this stream, using an associative accumulation function.
+An <tt>OptionalInt</tt> describing the reduced value, if any, is returned
+</ul>
+<p>As <tt>reduce</tt> is a general terminal operation, you may want to change the implementation of previously defined operations so as to adhere to the <b>abstraction principle</b>.
+</ul>
+
+<p>In addition, you will need to create the package <tt>cs2030.mystream</tt> for your implementation.
+
+<p>Define a client class <tt>Main</tt> that imports <tt>cs2030.mystream</tt> to test your implementation and compile your program using
+
+<!--
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4404" target="_blank">here</a> 
+to submit to CodeCrunch.
+-->
+<!--
+<p>Check the format correctness of the output by typing the following Unix command
+-->
+<pre>
+$ javac -d . *.java
+</pre>
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>
+$ jar cvf intstream4.jar *.java
+$ mkdir intstream4
+$ cp *.java intstream4
+$ cp intstream4.jar intstream4
+</pre>
+
+<p>Verify your jar archive using
+
+<pre>
+$ jar tf ~/intstream4/intstream4.jar
+</pre>
+
+</table>
+
+

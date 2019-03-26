@@ -1,0 +1,388 @@
+<h3>Integer Streams</h3>
+<h4>Topic Coverage</h4>
+<ul>
+<li>Application of basic Java Streams</li>
+</ul>
+
+<h4>Requirements</h4>
+<ul>
+<li><b>Java Streams are to be used for the method implementations as specified in this assignment</b>
+<!--
+<li>Program style: adherance to <a href="https://www.comp.nus.edu.sg/~cs2030/style/" target="_blank">CS2030 Java Style Guide</a></li>
+-->
+</ul>
+
+<!--
+<h4>Problem Description</h4>
+
+<p>To get you familiar with a different 
+-->
+
+<h4>The Tasks</h4>
+
+<p>There are several tasks in this assignment.  You need to complete ALL the tasks.
+The tasks pre-supposes familiarity with the primitive type <tt>IntStream</tt> and hence some method signatures take primitive arrays as arguments.  However, if you are familiar with object <tt>Streams</tt>, you are allowed to change the method parameter type from primitive array to <tt>List</tt> instead.
+
+<!--
+This task is divided into several levels. Read through all the levels  (from first to last, then from last to first) to see how the different levels are related. <strong>You may start from any level.</strong></p>
+-->
+<p>In each task, you are to</p>
+<ul>
+<li>define a <tt>Main</tt> class with the <tt>main</tt> method to handle input and output; </li>
+<li>check for output format correctness using the <tt>diff</tt> utility (see specific level for usage details).  Note that only <strong>one</strong> test case is provided for this; </li>
+<!--
+<li>check for styling errors by invoking <tt>checkstyle</tt>. For example, to check styling for all java files
+<pre>$ checkstyle *.java
+</pre>
+</li>
+-->
+<li>save a copy of all source files into the appropriate level directory (see specific level for usage details). </li>
+</ul>
+
+
+<table style="width: 800px;" border="1" cellpadding="10">
+<tbody>
+<tr>
+<td>
+<h4>Task 1</h4>
+
+<p><big><strong>Perfect Numbers</strong></big></p>
+
+<p>Define the method <tt>isPerfect</tt> that takes in an integer <tt>n</tt> and determines if <tt>n</tt> is a perfect number.
+
+<p>A perfect number is a positive integer that is equal to the sum of its proper divisors. A proper divisor is a positive integer other than the number itself that divides the number evenly (i.e. no remainder).</p>
+<p>For example, <tt>6</tt> is the smallest perfect number, because the sum of its proper divisors <tt>1</tt>, <tt>2</tt>, and <tt>3</tt> is equal to <tt>6</tt>. <tt>8</tt> is not a perfect number because <tt>1 + 2 + 4</tt> is not equal to <tt>8</tt>. Note that <tt>1</tt> is not a perfect number by definition.</p>
+
+<pre>
+static boolean isPerfect(int n)
+</pre>
+
+<p>The following is a sample run of the program.  User input is <span style="text-decoration: underline;">underlined</span>.   <!-- Ensure that the last line of output is followed by a newline character. --></p>
+<table border="1">
+
+<tr><td><tt>
+<u>6<br>
+true<br>
+
+<tr><td><tt>
+<u>8<br>
+false<br>
+
+</table>
+
+<!--
+<p>Click <a href="task_view.php?tid=4046" target="_blank">here</a> to submit to CodeCrunch.</p>
+-->
+
+<p>Check the format correctness of the output by typing the following Unix command</p>
+<pre>$ java Main &lt; test1.in | diff - test1.out
+</pre>
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands</p>
+<pre>
+$ jar cvf stream1.jar *.java
+$ mkdir stream1
+$ cp *.java stream1
+$ cp stream1.jar stream1
+</pre>
+
+<p>Verify your jar archive using</p>
+<pre>
+$ jar tvf ~/stream1/stream1.jar
+</pre>
+<!-- To proceed to the next level (say level 2), copy your program by typing the Unix command
+<pre>
+cp valley1.c valley2.c
+</pre>
+-->
+</table>
+
+<table style="width: 800px;" border="1" cellpadding="10">
+<tbody>
+<tr>
+<td>
+<h4>Task 2</h4>
+
+<p><big><strong>Square Numbers</strong></big></p>
+
+<p>Define the method <tt>isSquare</tt> that takes in an integer <tt>n</tt> and determines if <tt>n</tt> is a square number.
+
+<p>A perfect square is the square of an integer. Examples are <tt>9 (= 3&times;3)</tt>, <tt>4 (= 2&times;2)</tt>, and <tt>1 (= 1&times;1)</tt>.</p>
+
+<pre>
+static boolean isSquare(int n)
+</pre>
+
+<p>The following is a sample run of the program.  User input is <span style="text-decoration: underline;">underlined</span>.   <!-- Ensure that the last line of output is followed by a newline character. --></p>
+<table border="1">
+
+<tr><td><tt>
+<u>81<br>
+true<br>
+
+<tr><td><tt>
+<u>80<br>
+false<br>
+
+</table>
+
+<!--
+<p>Click <a href="task_view.php?tid=4046" target="_blank">here</a> to submit to CodeCrunch.</p>
+-->
+
+<p>Check the format correctness of the output by typing the following Unix command</p>
+<pre>$ java Main &lt; test2.in | diff - test2.out
+</pre>
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands</p>
+<pre>
+$ jar cvf stream2.jar *.java
+$ mkdir stream2
+$ cp *.java stream2
+$ cp stream2.jar stream2
+</pre>
+
+<p>Verify your jar archive using</p>
+<pre>
+$ jar tvf ~/stream2/stream2.jar
+</pre>
+<!-- To proceed to the next level (say level 2), copy your program by typing the Unix command
+<pre>
+cp valley1.c valley2.c
+</pre>
+-->
+</table>
+
+<!--
+<table style="width: 800px;" border="1" cellpadding="10">
+<tbody>
+<tr>
+<td>
+<h4>Task 3</h4>
+
+<p><big><strong>Reverse Number</strong></big></p>
+
+<p>Define the method <tt>reverse</tt> that takes in an integer <tt>n</tt> and returns the reverse of <tt>n</tt>.
+
+<pre>
+static int reverse(int n)
+</pre>
+
+<p>The following is a sample run of the program.  User input is <span style="text-decoration: underline;">underlined</span>.</p>
+<table border="1">
+
+<tr><td><tt>
+<u>1234<br>
+4321<br>
+
+<tr><td><tt>
+<u>0<br>
+0<br>
+
+</table>
+
+<p>Click <a href="task_view.php?tid=4046" target="_blank">here</a> to submit to CodeCrunch.</p>
+
+<p>Check the format correctness of the output by typing the following Unix command</p>
+<pre>$ java Main &lt; test3.in | diff - test3.out
+</pre>
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands</p>
+<pre>$ mkdir stream3
+$ cp *.java stream3
+</pre>
+</table>
+-->
+
+
+<table style="width: 800px;" border="1" cellpadding="10">
+<tbody>
+<tr>
+<td>
+<h4>Task 3</h4>
+
+<p><big><strong>Counting Repeats</strong></big></p>
+
+<p>Define the method <tt>countRepeats</tt> that takes in a <tt>List</tt> of digits <tt>0</tt> to <tt>9</tt> and returns the number of occurrences of adjacent repeated digits.
+
+<pre>
+static long countRepeats(int[] array)
+</pre>
+
+<p>For example, 
+
+<ul>
+<li> the array <tt>{0, 1, <u>2, 2</u>, 1, <u>2, 2</u>, 1, <u>3, 3</u>, 1}</tt>
+has three occurrences of repeated digits 
+<li> the array <tt>{0, <u>1, 1, 1, 1</u>, 2}</tt>
+has one occurrence
+</ul>
+
+<p>The following is a sample run of the program.  User input is <span style="text-decoration: underline;">underlined</span>.   <!-- Ensure that the last line of output is followed by a newline character. --></p>
+<table border="1">
+
+<tr><td><tt>
+<u>0 1 2 2 1 2 2 1 3 3 1<br>
+^D</u></br>
+Number of occurrences: 3<br>
+
+</table>
+
+<!--
+<p>Click <a href="task_view.php?tid=4046" target="_blank">here</a> to submit to CodeCrunch.</p>
+-->
+
+<p>Check the format correctness of the output by typing the following Unix command</p>
+<pre>$ java Main &lt; test3.in | diff - test3.out
+</pre>
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands</p>
+<pre>
+$ jar cvf stream3.jar *.java
+$ mkdir stream3
+$ cp *.java stream3
+$ cp stream3.jar stream3
+</pre>
+
+<p>Verify your jar archive using</p>
+<pre>
+$ jar tvf ~/stream3/stream3.jar
+</pre>
+<!-- To proceed to the next level (say level 2), copy your program by typing the Unix command
+<pre>
+cp valley1.c valley2.c
+</pre>
+-->
+</table>
+
+<table style="width: 800px;" border="1" cellpadding="10">
+<tbody>
+<tr>
+<td>
+<h4>Task 4</h4>
+<p><big><strong>Finding Variance</strong></big></p>
+
+<p>Define the method <tt>variance</tt> that takes in an integer array of elements and returns the variance of the elements.  The variance of an array of 
+<a href="https://www.codecogs.com/eqnedit.php?latex=x_i" target="_blank"><img src="https://latex.codecogs.com/gif.latex?x_i" title="x_i" /></a>
+elements is defined as
+
+<p><div align=center>
+<a href="https://www.codecogs.com/eqnedit.php?latex=\sigma^2&space;=&space;\frac{\sum_{k=0}^{n-1}(x_k&space;-&space;\mu)^2}{n-1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\sigma^2&space;=&space;\frac{\sum_{k=0}^{n-1}(x_k&space;-&space;\mu)^2}{n-1}" title="\sigma^2 = \frac{\sum_{k=0}^{n-1}(x_k - \mu)^2}{n-1}" /></a>
+</div>
+
+<p>where 
+<a href="https://www.codecogs.com/eqnedit.php?latex=\mu" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mu" title="\mu" /></a>
+is the mean (or average) of all 
+<a href="https://www.codecogs.com/eqnedit.php?latex=n" target="_blank"><img src="https://latex.codecogs.com/gif.latex?n" title="n" /></a>
+elements.
+Note that variance is only valid for an array of two or more elements.
+
+<p>Examples,
+
+<ul>
+<li><tt>variance(IntStream.rangeClosed(1,6).toArray())</tt> returns
+<tt>OptionalDouble[3.5]</tt>;
+<li><tt>variance(IntStream.of().toArray())</tt> returns <tt>OptionalDouble.empty</tt>
+<li><tt>variance(IntStream.of(1).toArray())</tt> returns <tt>OptionalDouble.empty</tt>
+</ul>
+
+<p>The following is a sample run of the program.  User input is <span style="text-decoration: underline;">underlined</span>.   <!-- Ensure that the last line of output is followed by a newline character. --></p>
+
+<table border="1">
+
+<tr><td><tt>
+<u>0 1 2 2 1 2 2 1 3 3 1<br>
+^D</u></br>
+Variance: OptionalDouble[0.8545454545454545]<br>
+
+<tr><td><tt>
+<u>^D</u></br>
+Variance: OptionalDouble.empty<br>
+
+<tr><td><tt>
+<u>1<br>
+<u>^D</u></br>
+Variance: OptionalDouble.empty<br>
+
+</table>
+
+<!--
+<p>Click <a href="task_view.php?tid=4047" target="_blank">here</a> to submit to CodeCrunch.</p>
+-->
+
+<p>Check the format correctness of the output by typing the following Unix command</p>
+<pre>$ java Main &lt; test4.in | diff - test4.out
+</pre>
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands</p>
+<pre>
+$ jar cvf stream4.jar *.java
+$ mkdir stream4
+$ cp *.java stream4
+$ cp stream4.jar stream4
+</pre>
+
+<p>Verify your jar archive using</p>
+<pre>
+$ jar tvf ~/stream4/stream4.jar
+</pre>
+
+</table>
+
+<table style="width: 800px;" border="1" cellpadding="10">
+<tbody>
+<tr>
+<td>
+<h4>Task 5</h4>
+<p><big><strong>Prime Factors</strong></big></p>
+
+<p>Write a method <tt>factors</tt> with that takes in an integer <tt>x</tt> and returns a <tt>IntStream</tt> consisting of the factors of <tt>x</tt>. 
+
+<pre>
+static IntStream factors(int x)
+</pre>
+
+<p>As an example, <tt>factors(6)</tt> should return the stream of integers <tt>1, 2, 3, 6</tt>.
+
+<p>Thereafter, write a method <tt>primeFactors</tt> that takes in an integer <tt>x (&gt; 1)</tt> and returns a <tt>IntStream</tt> consisting of the prime factors of&nbsp;<tt>x</tt>.
+
+<p>A prime factor is a factor that is a prime number, excluding <tt>1</tt>. For instance, prime factors of <tt>6</tt> are <tt>2</tt> and <tt>3</tt>.
+
+<pre>
+static IntStream primeFactors(int x)
+</pre>
+
+<p>The following is a sample run of the program.  User input is <span style="text-decoration: underline;">underlined</span>.</p>
+
+<table border="1">
+
+<tr><td><tt>
+<u>6</u></br>
+Prime factors of 6 are: 2 3<br>
+
+<tr><td><tt>
+<u>12</u></br>
+Prime factors of 6 are: 2 3<br>
+
+<tr><td><tt>
+<u>731</u></br>
+Prime factors of 731 are: 17 43<br>
+
+
+</table>
+
+<!--
+<p>Click <a href="task_view.php?tid=4048" target="_blank">here</a> to submit to CodeCrunch.</p>
+-->
+
+<p>Check the format correctness of the output by typing the following Unix command</p>
+<pre>$ java Main &lt; test5.in | diff - test5.out
+</pre>
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands</p>
+<pre>
+$ jar cvf stream5.jar *.java
+$ mkdir stream5
+$ cp *.java stream5
+$ cp stream5.jar stream5
+</pre>
+
+<p>Verify your jar archive using</p>
+<pre>
+$ jar tvf ~/stream5/stream5.jar
+</pre>
+</table>
