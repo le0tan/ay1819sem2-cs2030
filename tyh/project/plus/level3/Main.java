@@ -3,6 +3,7 @@ import java.util.PriorityQueue;
 import cs2030.simulator.EventSimulator;
 import cs2030.simulator.Customer;
 import cs2030.simulator.Event;
+import cs2030.simulator.Result;
 // import cs2030.simulator.RandomGenerator;
 
 // new RandomGenerator(int seed, double lambda, double mu)
@@ -34,7 +35,7 @@ public class Main {
         }
         while (es.nextStep()) {
         }
-        PriorityQueue<Event> result = es.getResult();
+        PriorityQueue<Result> result = es.getResult();
         while (!result.isEmpty()) {
             System.out.println(result.poll());
         }

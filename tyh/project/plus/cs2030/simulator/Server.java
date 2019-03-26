@@ -10,9 +10,7 @@ public class Server {
     public static int numOfServers = 0;
     public int serverID;
     private boolean isServing;
-    // private boolean isWaiting;
     private double nextServiceTime;
-    // private Customer servingCustomer;
     private Queue<Customer> waitingQueue;
     private int queueLength;
     private double restingProbability;
@@ -30,9 +28,7 @@ public class Server {
      */
     public Server(int queueLength, double restingProbability) {
         isServing = false;
-        // isWaiting = false;
         nextServiceTime = 0.0;
-        // servingCustomer = null;
         numOfServers++;
         serverID = numOfServers;
         waitingQueue = new LinkedList<Customer>();
@@ -66,35 +62,31 @@ public class Server {
      * Serve a customer, return the served customer if successful.
      * @return the customer that's served (with changed status and properties)
      */
-    public Customer serve(Customer customer) {
-        // System.out.printf("server %d next time: %.3f\n", this.serverID, nextServiceTime);
-        Customer returnedCustomer = customer;
+    public CustomerEvent serve(CustomerEvent customer) {
+        CustomerEvent returnedCustomer = null;
         boolean shouldReturn = true;
-        switch (customer.status) {
-            case Customer.ARRIVES:
-                if (customer.getTimeOfArrival() >= nextServiceTime) {
-                    returnedCustomer = customer.withStatus(Customer.SERVED).withServer(this);
+        switch (customer.getType()) {
+            case Event.ARRIVES:
+                if (customer.getTime() >= nextServiceTime) {
+                    customer.getCustomer().setServer(this);
+                    returnedCustomer = new CustomerEvent(customer.getTime(), Event.SERVED, customer.getCustomer());
                 } else if (canWait()) {
-                    returnedCustomer = customer.withStatus(Customer.WAITS).withServer(this);
-                    this.waitingQueue.add(returnedCustomer);
+                    customer.getCustomer().setServer(this);
+                    returnedCustomer = new CustomerEvent(customer.getTime(), Event.WAITS, customer.getCustomer());
+                    this.waitingQueue.add(customer.getCustomer());
                 } else {
-                    returnedCustomer = customer.withStatus(Customer.LEAVES);
+                    returnedCustomer = new CustomerEvent(customer.getTime(), Event.LEAVES, customer.getCustomer());
                 }
                 break;
-            case Customer.SERVED:
+            case Event.SERVED:
                 isServing = true;
-                // if (isWaiting) {
-                //     isWaiting = false;
-                // }
-                // servingCustomer = customer;
                 double serviceTime = EventSimulator.randomGenerator.genServiceTime();
-                nextServiceTime = customer.getCurrentStatusTime() + serviceTime;
-                returnedCustomer = customer.withTimeOfService(customer.getCurrentStatusTime())
-                                           .withCurrentStatusTime(nextServiceTime)
-                                           .withStatus(Customer.DONE)
-                                           .withDurationOfService(serviceTime);
+                nextServiceTime = customer.getTime() + serviceTime;
+                customer.getCustomer().setTimeOfService(customer.getTime());
+                customer.getCustomer().setDurationOfService(serviceTime);
+                returnedCustomer = new CustomerEvent(nextServiceTime, Event.DONE, customer.getCustomer());
                 break;
-            case Customer.DONE:
+            case Event.DONE:
                 isServing = false;
                 if(this.needRest && EventSimulator.randomGenerator.genRandomRest() < this.restingProbability) {
                     final double restingTime = EventSimulator.randomGenerator.genRestPeriod();
@@ -104,25 +96,11 @@ public class Server {
                 } else {
                     if(!this.waitingQueue.isEmpty()) {
                         Customer a = this.waitingQueue.poll();
-                        // System.out.printf("%d waited at %.3f to be served at %.3f\n", a.getCustomerID(), a.getCurrentStatusTime(), nextServiceTime);
-                        returnedCustomer = a.withStatus(Customer.SERVED)
-                                                   .withCurrentStatusTime(nextServiceTime);
+                        returnedCustomer = new CustomerEvent(nextServiceTime, Event.SERVED, a);
+                        a.setTimeOfService(customer.getTime());
                     } else {
-                        // servingCustomer = null;
                         shouldReturn = false;
                     }
-                }
-                break;
-            case Customer.BACK:
-                // System.out.println("back");
-                isBack();
-                if(!this.waitingQueue.isEmpty()) {
-                    Customer a = this.waitingQueue.poll();
-                    // System.out.printf("%d waited at %.3f to be served at %.3f\n", a.getCustomerID(), a.getCurrentStatusTime(), nextServiceTime);
-                    returnedCustomer = a.withStatus(Customer.SERVED)
-                                            .withCurrentStatusTime(nextServiceTime);
-                } else {
-                    shouldReturn = false;
                 }
                 break;
             default:
@@ -132,6 +110,17 @@ public class Server {
         }
         if (shouldReturn) {
             return returnedCustomer;
+        } else {
+            return null;
+        }
+    }
+
+
+    public CustomerEvent beBack() {
+        isBack();
+        if(!this.waitingQueue.isEmpty()) {
+            Customer a = this.waitingQueue.poll();
+            return new CustomerEvent(nextServiceTime, Event.SERVED, a);
         } else {
             return null;
         }
