@@ -1,32 +1,36 @@
-import java.util.function.Supplier;
-import java.util.function.Function;
+import java.util.function.*;
+import java.util.*;
 
 interface IFL<T> {
-  
-  static <U> IFL<U> generate(Supplier<U> sup) {
-    return new IFLImpl<U>() {
-      @Override
-      public U get() {
-        return sup.get();
-      }
-    };
-  }
+	static <T> IFL<T> generate(Supplier<T> sup) {
+		return new IFLImpl<T>() {
+			@Override
+			public Optional<T> get() {
+				return Optional.of(sup.get());
+			}
+		};
+	}
 
-  static <U> IFL<U> iterate(U seed, Function<U,U> next) {
-    return new IFLImpl<U>() {
-      U elem = seed;
-      Function<U,U> func = x -> {
-        func = next;
-        return elem;
-      };
-      @Override
-      public U get() {
-        elem = func.apply(elem);
-        return elem;
-      }
-    };
-  }
 
-  public T get();
-  public <R> IFL<R> map(Function<T,R> mapper);
+	static <T> IFL<T> iterate(T seed, Function<T,T> next) {
+		return new IFLImpl<T>() {
+			T elem = seed;
+			Function<T,T> func = x -> {
+				func = next;
+				return seed;
+			};
+			@Override
+			public Optional<T> get() {
+				elem = func.apply(elem);
+				return Optional.of(elem);
+			}
+		};
+	}
+
+	public Optional<T> get();
+	public <R> IFL<R> map(Function<T,R> mapper);
+	public IFL<T> limit(int n);
+
+	public void forEach(Consumer<T> cs);
+	public T reduce(T identity, BiFunction<T,T,T> func);
 }
