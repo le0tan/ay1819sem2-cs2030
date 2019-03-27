@@ -1,1 +1,1 @@
-# ay1819sem2-cs2030
+# CS2030 @ AY18/19 Semester 2
