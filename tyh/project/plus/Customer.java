@@ -16,7 +16,8 @@ public class Customer {
     private boolean isGreedy;
 
     /**
-     * Constructor for initializing the customer array.
+     * Constructor for initializing the customer array 
+     * (when <code>isGreedy</code> can be put as <code>false</code> in default).
      * @param time the time of arrival
      */
     public Customer(double time) {
@@ -28,6 +29,11 @@ public class Customer {
         this.isGreedy = false;
     }
 
+    /**
+     * Constructor for initializing the customer array.
+     * @param time time of arrival
+     * @param greedy if the customer is greedy
+     */
     public Customer(double time, boolean greedy) {
         this.timeOfArrival = time;
         this.timeOfService = -1.0;
@@ -37,27 +43,12 @@ public class Customer {
         this.isGreedy = greedy;
     }
 
-    public boolean isGreedy() {
-        return this.isGreedy;
-    }
-
     /**
-     * Constructor for cloning the customer.
-     * @param arrival time of arrival
-     * @param service time of service
-     * @param statustime current status time
-     * @param id customer ID
-     * @param status customer status
-     * @param server the server which serves this customer (null if it's not served)
+     * Getter for <code>isGreedy</code> property.
+     * @return <code>isGreedy</code> property
      */
-    public Customer(double arrival, double service, 
-                    int id, Server server, double duration, boolean greedy) {
-        this.timeOfArrival = arrival;
-        this.timeOfService = service;
-        this.customerID = id;
-        this.server = server;
-        this.durationOfService = duration;
-        this.isGreedy = greedy;
+    public boolean isGreedy() {
+        return isGreedy;
     }
     
 
@@ -98,11 +89,11 @@ public class Customer {
      * @return the duration of service.
      */
     public double getDurationOfService() {
-        // System.out.println(durationOfService);
         return durationOfService;
     }
 
     /**
+     * Setter for server.
      * @param server the server to set
      */
     public void setServer(Server server) {
@@ -110,6 +101,7 @@ public class Customer {
     }
 
     /**
+     * Setter for time of service.
      * @param timeOfService the timeOfService to set
      */
     public void setTimeOfService(double timeOfService) {
@@ -117,6 +109,7 @@ public class Customer {
     }
 
     /**
+     * setter for service duration.
      * @param durationOfService the durationOfService to set
      */
     public void setDurationOfService(double durationOfService) {

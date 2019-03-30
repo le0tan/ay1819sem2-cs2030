@@ -17,14 +17,10 @@ public class Server {
     private boolean isResting;
     protected boolean needRest;
 
-    public void isBack() {
-        this.isResting = false;
-    }
-
     /**
-     * @param queueLength the maximum length of waiting queue
-     * Constructor for Server object.
-     * The ID of the server is self-incremental.
+     * Constructor for <code>Server</code>.
+     * @param queueLength length of waiting queue
+     * @param restingProbability probability of resting
      */
     public Server(int queueLength, double restingProbability) {
         isServing = false;
@@ -38,29 +34,75 @@ public class Server {
         this.needRest = true;
     }
 
+    /**
+     * Reportor for whether the server can server right away.
+     * @param time current time
+     * @return a boolean describing whether the server can server right away
+     */
     public boolean canServeImmediately(double time) {
         return !this.isServing && nextServiceTime <= time;
     }
 
+    /**
+     * Reportor for whether the server can accept a waiting customer.
+     * @return true if it can accept one more waiting customer, false otherwise
+     */
     public boolean canWait() {
         return this.waitingQueue.size() < this.queueLength;
     }
 
+    /**
+     * Getter for the current queue length.
+     * @return the length of waiting queue
+     */
     public int getQueueLength() {
         return this.waitingQueue.size();
     }
 
+    /**
+     * Getter for <code>isResting</code> property.
+     */
+    public void isBack() {
+        this.isResting = false;
+    }
+
+    /**
+     * Method to be called when the server is back from rest.
+     * @return a new <code>CustomerEvent</code> of status <code>Event.SERVED</code>
+     *          if the server is serving a customer in the waiting queue right
+     *          after the break, <code>null</code> otherwise
+     */
+    public CustomerEvent beBack() {
+        isBack();
+        if (!this.waitingQueue.isEmpty()) {
+            Customer a = this.waitingQueue.poll();
+            return new CustomerEvent(nextServiceTime, Event.SERVED, a);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Getter for <code>isResting</code> property.
+     * @return a boolean <code>isResting</code>
+     */
     public boolean isResting() {
         return this.isResting;
     }
 
+
+    /**
+     * Getter for <code>getBackTime</code> property.
+     * @return a boolean <code>getBackTime</code>
+     */
     public double getBackTime() {
         return this.nextServiceTime;
     }
 
     /**
-     * Serve a customer, return the served customer if successful.
-     * @return the customer that's served (with changed status and properties)
+     * This method takes a <code>CustomerEvent</code>, 
+     * process the event and returns the following one if necessary.
+     * @return following <code>CustomerEvent</code> if there is one.
      */
     public CustomerEvent serve(CustomerEvent customer) {
         CustomerEvent returnedCustomer = null;
@@ -69,13 +111,22 @@ public class Server {
             case Event.ARRIVES:
                 if (customer.getTime() >= nextServiceTime) {
                     customer.getCustomer().setServer(this);
-                    returnedCustomer = new CustomerEvent(customer.getTime(), Event.SERVED, customer.getCustomer());
+                    returnedCustomer = new CustomerEvent(
+                                            customer.getTime(), 
+                                            Event.SERVED, 
+                                            customer.getCustomer());
                 } else if (canWait()) {
                     customer.getCustomer().setServer(this);
-                    returnedCustomer = new CustomerEvent(customer.getTime(), Event.WAITS, customer.getCustomer());
+                    returnedCustomer = new CustomerEvent(
+                                            customer.getTime(), 
+                                            Event.WAITS, 
+                                            customer.getCustomer());
                     this.waitingQueue.add(customer.getCustomer());
                 } else {
-                    returnedCustomer = new CustomerEvent(customer.getTime(), Event.LEAVES, customer.getCustomer());
+                    returnedCustomer = new CustomerEvent(
+                                            customer.getTime(), 
+                                            Event.LEAVES, 
+                                            customer.getCustomer());
                 }
                 break;
             case Event.SERVED:
@@ -84,17 +135,22 @@ public class Server {
                 nextServiceTime = customer.getTime() + serviceTime;
                 customer.getCustomer().setTimeOfService(customer.getTime());
                 customer.getCustomer().setDurationOfService(serviceTime);
-                returnedCustomer = new CustomerEvent(nextServiceTime, Event.DONE, customer.getCustomer());
+                returnedCustomer = new CustomerEvent(
+                                        nextServiceTime, 
+                                        Event.DONE, 
+                                        customer.getCustomer());
                 break;
             case Event.DONE:
                 isServing = false;
-                if(this.needRest && EventSimulator.randomGenerator.genRandomRest() < this.restingProbability) {
+                if (this.needRest 
+                    && EventSimulator.randomGenerator.genRandomRest() 
+                        < this.restingProbability) {
                     final double restingTime = EventSimulator.randomGenerator.genRestPeriod();
                     this.nextServiceTime += restingTime;
                     this.isResting = true;
                     shouldReturn = false;
                 } else {
-                    if(!this.waitingQueue.isEmpty()) {
+                    if (!this.waitingQueue.isEmpty()) {
                         Customer a = this.waitingQueue.poll();
                         returnedCustomer = new CustomerEvent(nextServiceTime, Event.SERVED, a);
                         a.setTimeOfService(customer.getTime());
@@ -110,17 +166,6 @@ public class Server {
         }
         if (shouldReturn) {
             return returnedCustomer;
-        } else {
-            return null;
-        }
-    }
-
-
-    public CustomerEvent beBack() {
-        isBack();
-        if(!this.waitingQueue.isEmpty()) {
-            Customer a = this.waitingQueue.poll();
-            return new CustomerEvent(nextServiceTime, Event.SERVED, a);
         } else {
             return null;
         }

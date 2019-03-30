@@ -1,5 +1,6 @@
 package cs2030.simulator;
 
+
 public class Result {
     private double time;
     private Customer customer;
@@ -9,6 +10,7 @@ public class Result {
 
 
     /**
+     * Getter for <code>isCustomerEvent</code> property.
      * @return the isCustomerEvent
      */
     public boolean isCustomerEvent() {
@@ -16,9 +18,9 @@ public class Result {
     }
 
     /**
-     * Constructor for the event.
+     * Constructor for <code>Result</code> that involves a customer.
      * @param time time of the event
-     * @param customerID customer involved in the event
+     * @param customer customer involved in the event
      * @param eventType type of the event
      * @param server whom served the customer in this event (null if there isn't any)
      */
@@ -30,6 +32,12 @@ public class Result {
         this.isCustomerEvent = true;
     }
 
+    /**
+     * Constructore for <code>Result</code> that only involves the server.
+     * @param time time of event
+     * @param eventType type of event
+     * @param server server
+     */
     public Result(double time, int eventType, Server server) {
         this.time = time;
         this.eventType = eventType;
@@ -43,16 +51,19 @@ public class Result {
      */
     @Override
     public String toString() {
-        if(this.isCustomerEvent){
-            return String.format("%.3f %s %s", time, customerToString(this.customer), statusToString());
+        if (this.isCustomerEvent) {
+            return String.format("%.3f %s %s", 
+                                    time, 
+                                    customerToString(this.customer), 
+                                    statusToString());
         } else {
             return String.format("%.3f server %d %s", time, server.serverID, statusToString());
         }
     }
 
     /**
-     * Format the status according to the sample output.
-     * @return eventType + serverID (if necessary)
+     * Formatter for the status according to the sample output.
+     * @return a status string
      */
     private String statusToString() {
         switch (eventType) {
@@ -75,16 +86,26 @@ public class Result {
         }
     }
 
+    /**
+     * Formatter for the server information.
+     * @param s the server
+     * @return a string of server's description
+     */
     private String serverToString(Server s) {
-        if(s instanceof SelfCheckoutCounter) {
+        if (s instanceof SelfCheckoutCounter) {
             return String.format("self-check %d", s.serverID);
         } else {
             return String.format("server %d", s.serverID);
         }
     }
 
+    /**
+     * Formatter for the customer information.
+     * @param c the customer
+     * @return a string of customer's description
+     */
     private String customerToString(Customer c) {
-        if(c.isGreedy()) {
+        if (c.isGreedy()) {
             return String.format("%d(greedy)", c.getCustomerID());
         } else {
             return Integer.toString(c.getCustomerID());

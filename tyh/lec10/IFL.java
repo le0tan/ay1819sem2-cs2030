@@ -1,11 +1,10 @@
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.function.Function;
 
 interface IFL<T> {
   
   static <U> IFL<U> generate(Supplier<U> sup) {
     return new IFLImpl<U>() {
-      @Override
       public U get() {
         return sup.get();
       }
@@ -29,4 +28,5 @@ interface IFL<T> {
 
   public T get();
   public <R> IFL<R> map(Function<T,R> mapper);
+  public void forEach(Consumer<T> f);
 }

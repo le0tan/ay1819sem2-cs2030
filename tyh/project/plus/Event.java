@@ -1,7 +1,8 @@
 package cs2030.simulator;
 
 /**
- * Event
+ * Interface <code>Event</code> as the parent for
+ * <code>CustomerEvent</code> and <code>ServerEvent</code>.
  */
 public interface Event {
 
@@ -14,6 +15,7 @@ public interface Event {
     public static final int BACK = 5;
 
     public double getTime();
-    public int getType();
 
+    public int getType();
+    
 }

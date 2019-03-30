@@ -19,10 +19,10 @@ public class Main {
         double arrivalRate = sc.nextDouble();
         double serviceRate = sc.nextDouble();
         double restingRate = sc.nextDouble();
-        double Pr = sc.nextDouble();
-        double Pg = sc.nextDouble();
+        double pr = sc.nextDouble();
+        double pg = sc.nextDouble();
         EventSimulator es = new EventSimulator(numOfServers, numOfSelfCheckout, seed, arrivalRate, 
-                            serviceRate, restingRate, Pr, Pg, maxLength);
+                            serviceRate, restingRate, pr, pg, maxLength);
         for (int i = 0; i < numOfCustomers; i++) {
             es.addCustomer();
         }
