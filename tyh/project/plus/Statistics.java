@@ -1,5 +1,9 @@
 package cs2030.simulator;
 
+/**
+ * A class dealing with storing and processing statistics.
+ */
+
 public class Statistics {
 
     public int numOfCustomersServed;

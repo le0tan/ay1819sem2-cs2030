@@ -3,6 +3,10 @@ package cs2030.simulator;
 import java.util.Queue;
 import java.util.LinkedList;
 
+/**
+ * Server that serves customers.
+ */
+
 public class Server {
 
     public static final int SERVER_REST = -1;
@@ -102,6 +106,7 @@ public class Server {
     /**
      * This method takes a <code>CustomerEvent</code>, 
      * process the event and returns the following one if necessary.
+     * @param customer the <code>CustomerEvent</code> that's processed
      * @return following <code>CustomerEvent</code> if there is one.
      */
     public CustomerEvent serve(CustomerEvent customer) {

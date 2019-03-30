@@ -2,6 +2,9 @@ package cs2030.simulator;
 
 import java.util.Comparator;
 
+/**
+ * Comparator for two events so that they are processed in the right order.
+ */
 
 public class EventComparator implements Comparator<Event> {
 

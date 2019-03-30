@@ -1,12 +1,15 @@
 package cs2030.simulator;
 
+/**
+ * A immutable class for storing results.
+ */
 
 public class Result {
-    private double time;
-    private Customer customer;
-    private int eventType;
-    private Server server;
-    private boolean isCustomerEvent;
+    private final double time;
+    private final Customer customer;
+    private final int eventType;
+    private final Server server;
+    private final boolean isCustomerEvent;
 
 
     /**
@@ -43,6 +46,7 @@ public class Result {
         this.eventType = eventType;
         this.server = server;
         this.isCustomerEvent = false;
+        this.customer = null;
     }
 
     /**

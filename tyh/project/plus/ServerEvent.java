@@ -1,5 +1,9 @@
 package cs2030.simulator;
 
+/**
+ * ServerEvent.
+ */
+
 public class ServerEvent implements Event {
 
     private double time;
