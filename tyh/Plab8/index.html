@@ -1,0 +1,323 @@
+<h3>Infinite List</h3>
+
+<h4>Problem Description</h4>
+
+<p>An infinite list <tt>InfiniteList<T></tt> is a generic list that can store elements of type <tt>T</tt> in order where duplicates are allowed.
+
+<!--
+The main differences are:
+
+Lab 3's version of InfiniteList is not always infinite. It can be truncated just like a Stream with limit and takeWhile operations. So methods such as findFirst need to consider the possibility of a finite list, including an empty list.
+-->
+
+Unlike the previous lab, intermediate operations of <tt>InfiniteList</tt> should be lazily evaluated.
+
+<!--
+We need to be as lazy as possible and only generate the elements (i.e., invoke the Supplier's get() method) when necessary. Once we generate an element, we should not generate it again. So, we cache a copy of the value if it has been generated before. This logic has been written in the head() and tail() method for you.
+-->
+
+
+<h4>The Task</h4>
+
+<p>You are to design your own <tt>InfiniteList</tt> <b>interface</b> with the following requirements below.
+As <tt>InfiniteList</tt> is similar to Java's <tt>Stream</tt> in Java, and so, you are <b>not allowed</b> to import packages from <tt>java.util.stream</tt>
+
+<ul>
+<li>Create the <tt>InfiniteList</tt> interface and the <tt>InfiniteListImpl</tt> implementation
+<li>Define a <tt>get</tt> method for each operation
+</ul>
+
+
+<p>This task is divided into several levels.
+Read through all the levels to see how the different levels are related. <b>You need to complete all levels</b>.
+
+<p>Just remember to:
+<ul>
+<li>archive and save a copy of all source files into the appropriate level directory (see specific level for usage details).
+</li>
+</ul>
+
+<p>
+<table border=1 cellpadding=10 width=800>
+
+<tr><td><h4>Level 1</h4>
+
+<p>Start the stream pipeline via the following data sources:
+<ul>
+<li><tt>InfiniteList.generate(Supplier&lt;T&gt; supplier)</tt>
+<li><tt>InfiniteList.iterate(T seed, Function&lt;T,T&gt; next)</tt>
+</ul>
+<!--You need to prevent constructs like: <tt>MyIntStream.of(1,2,3).range(1,3)</tt>
+-->
+
+<p>Implement a <tt>T get()</tt> method for each data source such that exactly one element is retrieved each time the method is called.
+
+<p>You will also need to define the abstract class <tt>InfinitListImpl</tt> which you can leave empty now.  This method will be populated with intermediate and terminal operations in the later levels.
+
+<p>Test the methods by writing a suitable test class, or using jshell. You may even write a jshell script.
+
+<pre>
+jshell&gt; /open InfiniteListImpl.java
+
+jshell&gt; /open InfiniteList.java
+
+jshell&gt; InfiniteList&lt;String&gt; ifl = InfiniteList.generate(() -&gt; "A")
+ifl ==&gt; InfiniteList$1@59fa1d9b
+
+jshell&gt; IntStream.range(1, 5).forEach(x -&gt; System.out.println(ifl.get()))
+A
+A
+A
+A
+
+jshell&gt; InfiniteList&lt;String&gt; ifl = InfiniteList.iterate("A", x -&gt; "A" + x)
+ifl ==&gt; InfiniteList$2@146ba0ac
+
+jshell&gt; ifl.get()
+$.. ==&gt; "A"
+
+jshell&gt; ifl.get()
+$.. ==&gt; "AA"
+
+jshell&gt; ifl.get()
+$.. ==&gt; "AAA"
+
+jshell&gt; InfiniteList&lt;String&gt; ifl = InfiniteList.iterate("A", x -&gt; "A" + x).generate(() -&gt; "A")
+|  Error:
+|  illegal static interface method call
+|    the receiver expression should be replaced with the type qualifier 
+|    'InfiniteList&lt;java.lang.String&gt;'
+|  InfiniteList&lt;String&gt; ifl = InfiniteList.iterate("A", x -&gt; "A" + x).generate(() -&gt; "A");
+|                             ^---------------------------------------------------------^
+</pre>
+
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4461" target="_blank">here</a> 
+to submit to CodeCrunch.
+<!--
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test1.in | diff - test1.out
+</pre>
+-->
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>
+$ jar cvf infinite1.jar *.java
+$ mkdir infinite1
+$ cp *.java infinite1
+$ cp infinite1.jar infinite1
+</pre>
+
+<p>Verify your jar archive using
+
+<pre>
+$ jar tf ~/infinite1/infinite1.jar
+</pre>
+
+</table>
+
+<table border=1 cellpadding=10 width=800>
+
+<tr><td><h4>Level 2</h4>
+
+<p>Implement the following <b>intermediate</b> operations following the corresponding specifications of Java's <tt>Stream</tt> API:
+<ul>
+    <li><tt><R> InfiniteList&lt;R&gt; map(Function&lt;T, R&gt; mapper)</tt>
+    <li><tt>InfiniteList&lt;T&gt; limit(int maxSize)</tt>
+    <li><tt>InfiniteList&lt;T&gt; filter(Predicate&lt;T&gt; predicate)</tt>
+    <li><tt>InfiniteList&lt;T&gt; takeWhile(Predicate&lt;T&gt; predicate)</tt>
+</ul>
+
+<p>As some of the methods could possibly produce no elements, you will need to redefine <tt>get</tt> to have a return type of <tt>Optional&lt;T&gt;</tt>.
+
+<p>Test the methods by writing a suitable test class, or using jshell. You may even write a jshell script.
+
+<pre>
+jshell&gt; /open InfiniteListImpl.java
+
+jshell&gt; /open InfiniteList.java
+
+jshell&gt; InfiniteList&lt;String&gt; ifl = InfiniteList.generate(() -&gt; "A").map(x -&gt; x + 1)
+ifl ==&gt; InfiniteListImpl$2@28d25987
+
+jshell&gt; IntStream.range(1, 5).forEach(x -&gt; System.out.println(ifl.get()))
+Optional[A1]
+Optional[A1]
+Optional[A1]
+Optional[A1]
+
+jshell&gt; InfiniteList&lt;Integer&gt; ifl = InfiniteList.iterate(1, x -&gt; x + 1).filter(x -&gt; x % 2 == 0)
+ifl ==&gt; InfiniteListImpl$3@7cd62f43
+
+jshell&gt; IntStream.range(1, 5).forEach(x -&gt; System.out.println(ifl.get()))
+Optional[2]
+Optional[4]
+Optional[6]
+Optional[8]
+
+jshell&gt; InfiniteList&lt;Integer&gt; ifl = InfiniteList.iterate(1, x -&gt; x + 1).limit(2) 
+ifl ==&gt; InfiniteListImpl$1@39c0f4a
+
+jshell&gt; IntStream.range(1, 5).forEach(x -&gt; System.out.println(ifl.get()))
+Optional[1]
+Optional[2]
+Optional.empty
+Optional.empty
+
+jshell&gt; InfiniteList&lt;Integer&gt; ifl = InfiniteList.iterate(1, x -&gt; x + 1).limit(2).filter(x -&gt; x % 2 == 0)
+ifl ==&gt; InfiniteListImpl$3@53b32d7
+
+jshell&gt; IntStream.range(1, 5).forEach(x -&gt; System.out.println(ifl.get()))
+Optional[2]
+Optional.empty
+Optional.empty
+Optional.empty
+
+jshell&gt; InfiniteList&lt;Integer&gt; ifl = InfiniteList.iterate(1, x -&gt; x + 1).takeWhile(x -&gt; x &lt; 3)
+ifl ==&gt; InfiniteListImpl$4@3abbfa04
+
+jshell&gt; IntStream.range(1, 5).forEach(x -&gt; System.out.println(ifl.get()))
+Optional[1]
+Optional[2]
+Optional.empty
+Optional.empty
+
+</pre>
+
+<!--
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4461" target="_blank">here</a> 
+to submit to CodeCrunch.
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test1.in | diff - test1.out
+</pre>
+-->
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>
+$ jar cvf infinite2.jar *.java
+$ mkdir infinite2
+$ cp *.java infinite2
+$ cp infinite2.jar infinite2
+</pre>
+
+<p>Verify your jar archive using
+
+<pre>
+$ jar tf ~/infinite2/infinite2.jar
+</pre>
+</table>
+
+<table border=1 cellpadding=10 width=800>
+<tr><td><h4>Level 3</h4>
+
+<p>Now implement the following <b>terminal</b> operations by following the corresponding specifications of Java's <tt>Stream</tt> API:
+<ul>
+    <li><tt>long count()</tt>
+    <li><tt>void forEach(Consumer&lt;T&gt; action)</tt>
+    <li><tt>Optional&lt;T&gt; reduce(BiFunction&lt;T,T,T&gt; accumulator)</tt>
+    <li><tt>T reduce(T identity, BiFunction&lt;T,T,T&gt; accumulator)</tt>
+    <li><tt>Object[] toArray()</tt>
+</ul>
+</ul>
+
+<p>You will also need to ensure that the <tt>get</tt> method can no longer be called from a client class.
+
+<p>Test the methods by writing a suitable test class, or using jshell.
+You may even write a jshell script.  
+
+<pre>
+jshell&gt; /open InfiniteListImpl.java
+
+jshell&gt; /open InfiniteList.java
+
+jshell&gt; InfiniteList.iterate(1, x -&gt; x + 1).filter(x -&gt; x % 2 == 1).limit(10).count()
+$.. ==&gt; 10
+
+jshell&gt; InfiniteList.iterate(1, x -&gt; x + 1).limit(10).filter(x -&gt; x % 2 == 1).count()
+$.. ==&gt; 5
+
+jshell&gt; InfiniteList.iterate(1, x -&gt; x + 1).limit(5).forEach(System.out::println)
+1
+2
+3
+4
+5
+
+jshell&gt; InfiniteList.iterate(1, x -&gt; x + 1).limit(5).reduce(0, (x, y) -&gt; x + y)
+$.. ==&gt; 15
+
+jshell&gt; InfiniteList.iterate(1, x -&gt; x + 1).limit(0).reduce(0, (x, y) -&gt; x + y)
+$.. ==&gt; 0
+
+jshell&gt; InfiniteList.iterate(1, x -&gt; x + 1).limit(5).reduce((x, y) -&gt; x + y)
+$.. ==&gt; Optional[15]
+
+jshell&gt; InfiniteList.iterate(1, x -&gt; x + 1).limit(0).reduce((x, y) -&gt; x + y)
+$.. ==&gt; Optional.empty
+
+jshell&gt; InfiniteList.iterate(1, x -&gt; x + 1).map(x -&gt; x * 2).limit(10).toArray()
+$20 ==&gt; Object[10] { 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 }
+
+jshell&gt; InfiniteList.generate(() -&gt; 1).get()
+|  Error:
+|  cannot find symbol
+|    symbol:   method get()
+|  InfiniteList.generate(() -&gt; 1).get()
+|  ^--------------------------------^
+
+jshell&gt; InfiniteList.generate(() -&gt; 1).map(x -&gt; x * 2).get()
+|  Error:
+|  cannot find symbol
+|    symbol:   method get()
+|  InfiniteList.generate(() -&gt; 1).map(x -&gt; x * 2).get()
+|  ^------------------------------------------------^
+</pre>
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>
+$ jar cvf infinite3.jar *.java
+$ mkdir infinite3
+$ cp *.java infinite3
+$ cp infinite3.jar infinite3
+</pre>
+
+<p>Verify your jar archive using
+
+<pre>
+$ jar tf ~/infinite3/infinite3.jar
+</pre>
+</table>
+
+<table border=1 cellpadding=10 width=800>
+<tr><td><h4>Level 4</h4>
+
+<p>Finally, create the package <tt>cs2030.mystream</tt> for the <tt>InfiniteList</tt> interface and its implementation class.
+
+<p>Define a client class <tt>Main</tt> that imports <tt>cs2030.mystream</tt> to test your implementation and compile your program using
+
+<!--
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4464" target="_blank">here</a> 
+to submit to CodeCrunch.
+<p>Check the format correctness of the output by typing the following Unix command
+-->
+<pre>
+$ javac -d . *.java
+</pre>
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+<pre>
+$ jar cvf infinite4.jar *.java
+$ mkdir infinite4
+$ cp *.java infinite4
+$ cp infinite4.jar infinite4
+</pre>
+
+<p>Verify your jar archive using
+
+<pre>
+$ jar tf ~/infinite4/infinite4.jar
+</pre>
+
+</table>
+
