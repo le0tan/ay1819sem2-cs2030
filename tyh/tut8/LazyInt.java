@@ -10,7 +10,7 @@ class LazyInt {
     return new LazyInt( () -> func.apply(this.get()));
   }
   public LazyInt flatMap(Function<Integer, LazyInt> func) {
-    return func.apply(this.get());
+    return new LazyInt( () -> func.apply(this.get()).get() );
   }
   public int get() {
     return sup.get();
