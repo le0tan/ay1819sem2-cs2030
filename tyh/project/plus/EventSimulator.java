@@ -73,7 +73,7 @@ public class EventSimulator {
      */
     public void addCustomer() {
         if (randomGenerator.genCustomerType() < this.probabilityOfGreedy) {
-            Customer currentCustomer = new Customer(currentTime, true);
+            Customer currentCustomer = new GreedyCustomer(currentTime);
             customers.add(currentCustomer);
             events.add(new CustomerEvent(currentTime, Event.ARRIVES, currentCustomer));
             currentTime += randomGenerator.genInterArrivalTime();

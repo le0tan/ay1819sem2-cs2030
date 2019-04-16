@@ -1,5 +1,7 @@
 package cs2030.simulator;
 
+import cs2030.simulator.GreedyCustomer;
+
 /**
  * Describes the status and basic information of
  * a <code>Customer</code>. 
@@ -27,8 +29,7 @@ public class Customer {
     private boolean isGreedy;
 
     /**
-     * Constructor for initializing the customer array 
-     * (when <code>isGreedy</code> can be put as <code>false</code> in default).
+     * Constructor for initializing the customer array. 
      * 
      * @param time the time of arrival
      */
@@ -42,27 +43,12 @@ public class Customer {
     }
 
     /**
-     * Constructor for initializing the customer array.
-     * 
-     * @param time      time of arrival
-     * @param greedy    if the customer is greedy
-     */
-    public Customer(double time, boolean greedy) {
-        this.timeOfArrival = time;
-        this.timeOfService = -1.0;
-        numOfCustomers++;
-        this.customerID = numOfCustomers;
-        this.server = null;
-        this.isGreedy = greedy;
-    }
-
-    /**
      * Getter for <code>isGreedy</code> property.
      * 
      * @return <code>isGreedy</code> property
      */
     public boolean isGreedy() {
-        return isGreedy;
+        return (this instanceof GreedyCustomer);
     }
     
 
