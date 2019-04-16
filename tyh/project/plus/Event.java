@@ -1,3 +1,5 @@
+package cs2030.simulator;
+
 /**
  * Created for <code>CustomerEvent</code> and <code>ServerEvent</code> 
  * so that we can store and compare them in a homogeneous array.
@@ -11,8 +13,6 @@
  * 
  * @author Tan Yuanhong
  */
-
-package cs2030.simulator;
 
 public interface Event {
 
@@ -28,8 +28,20 @@ public interface Event {
     public static final int SERVED = 4;
     public static final int BACK = 5;
 
+
+    /**
+     * Getter for the time field.
+     * 
+     * @return a double representing time of the event
+     */
     public double getTime();
 
+
+    /**
+     * Getter for the type of event.
+     * 
+     * @return an integer representing the type of event.
+     */
     public int getType();
     
 }

@@ -1,3 +1,5 @@
+package cs2030.simulator;
+
 /**
  * Describes the status and basic information of
  * a <code>Customer</code>. 
@@ -13,8 +15,6 @@
  * 
  * @author Tan Yuanhong
  */
-
-package cs2030.simulator;
 
 public class Customer {
 
@@ -129,7 +129,7 @@ public class Customer {
     }
 
     /**
-     * setter for service duration.
+     * Setter for service duration.
      * @param durationOfService the durationOfService to set
      */
     public void setDurationOfService(double durationOfService) {

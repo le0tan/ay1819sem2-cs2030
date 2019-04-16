@@ -1,3 +1,5 @@
+package cs2030.simulator;
+
 /**
  * Provides an implementation of <code>Event</code>
  * interface for events related with customers.
@@ -9,8 +11,6 @@
  * 
  * @author Tan Yuanhong
  */
-
-package cs2030.simulator;
 
 public class CustomerEvent implements Event {
 

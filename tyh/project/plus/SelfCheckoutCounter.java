@@ -1,3 +1,5 @@
+package cs2030.simulator;
+
 /**
  * A special type of server that doesn't need rest.
  * 
@@ -6,8 +8,6 @@
  * 
  * @author Tan Yuanhong
  */
-
-package cs2030.simulator;
 
 public class SelfCheckoutCounter extends Server {
 

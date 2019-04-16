@@ -1,3 +1,5 @@
+package cs2030.simulator;
+
 /**
  * An immutable class for storing results.
  * 
@@ -12,8 +14,6 @@
  * 
  * @author Tan Yuanhong
  */
-
-package cs2030.simulator;
 
 public class Result {
     private final double time;

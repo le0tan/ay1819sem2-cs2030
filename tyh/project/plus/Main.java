@@ -1,3 +1,8 @@
+import java.util.Scanner;
+import java.util.PriorityQueue;
+import cs2030.simulator.EventSimulator;
+import cs2030.simulator.Result;
+
 /**
  * Reads inputs and calls methods in <code>EventSimulator</code> to 
  * initialize and handle events.
@@ -21,11 +26,6 @@
  * 
  * @author Tan Yuanhong
  */
-
-import java.util.Scanner;
-import java.util.PriorityQueue;
-import cs2030.simulator.EventSimulator;
-import cs2030.simulator.Result;
 
 public class Main {
 

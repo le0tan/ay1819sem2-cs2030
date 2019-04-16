@@ -1,3 +1,7 @@
+package cs2030.simulator;
+
+import java.util.Comparator;
+
 /**
  * Comparator for results so that they are displayed in the right order.
  * 
@@ -10,10 +14,6 @@
  * 
  * @author Tan Yuanhong
  */
-
-package cs2030.simulator;
-
-import java.util.Comparator;
 
 public class ResultComparator implements Comparator<Result> {
 

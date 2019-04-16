@@ -1,3 +1,5 @@
+package cs2030.simulator;
+
 /**
  * A class dealing with storing, processing and outputing statistics.
  * 
@@ -9,8 +11,6 @@
  * 
  * @author Tan Yuanhong
  */
-
-package cs2030.simulator;
 
 public class Statistics {
 

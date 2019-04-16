@@ -1,3 +1,8 @@
+package cs2030.simulator;
+
+import java.util.Queue;
+import java.util.LinkedList;
+
 /**
  * Server that takes in a <code>CustomerEvent</code>, change its state (if necessary),
  * and output the subsequent event (if any).
@@ -19,11 +24,6 @@
  * 
  * @author Tan Yuanhong
  */
-
-package cs2030.simulator;
-
-import java.util.Queue;
-import java.util.LinkedList;
 
 public class Server {
 
@@ -208,5 +208,5 @@ public class Server {
             return null;
         }
     }
-    
+
 }

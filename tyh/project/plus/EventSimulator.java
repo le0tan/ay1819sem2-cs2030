@@ -1,3 +1,9 @@
+package cs2030.simulator;
+
+import java.util.PriorityQueue;
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * The main logic for processing events. It implements two main
  * functions: initialization and processing events in a functional way.
@@ -16,12 +22,6 @@
  * 
  * @author Tan Yuanhong
  */
-
-package cs2030.simulator;
-
-import java.util.PriorityQueue;
-import java.util.List;
-import java.util.ArrayList;
 
 public class EventSimulator {
 
