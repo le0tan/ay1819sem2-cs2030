@@ -1,34 +1,53 @@
+/**
+ * The main logic for processing events. It implements two main
+ * functions: initialization and processing events in a functional way.
+ * 
+ * <p>It has one <code>public static</code> field called randomGenerator, 
+ * which is assigned an instance of <code>RandomGenerator</code> with
+ * proper parameters when this class itself is initialized with constructor.
+ * 
+ * <p>It has one <code>public</code> instance field called statistics, 
+ * which stores all relavant statistics happened in the simulation.
+ * 
+ * <p>It has six private instance fields: customers (a list storing all customers), 
+ * result (a priority queue storing the records of events), events (a priority 
+ * queue where events go in and out with accordance to the processing rules), 
+ * servers (an array storing the servers), probabilityOfGreedy and currentTime.
+ * 
+ * @author Tan Yuanhong
+ */
+
 package cs2030.simulator;
 
 import java.util.PriorityQueue;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * The main logic for processing events.
- */
-
 public class EventSimulator {
+
+    public static RandomGenerator randomGenerator;
+
+    public Statistics statistics;
+
     private List<Customer> customers;
     private PriorityQueue<Result> result;
     private PriorityQueue<Event> events;
     private Server[] servers;
-    public Statistics statistics;
-    public static RandomGenerator randomGenerator;
     private double probabilityOfGreedy;
-    double currentTime = 0.0;
+    private double currentTime = 0.0;
 
     /**
      * Constructor for the <code>EventSimulator</code>.
-     * @param numOfServers number of servers
+     * 
+     * @param numOfServers      number of servers
      * @param numOfSelfCheckout number of self checkout counters
-     * @param seed seed for <code>RandomGenerator</code>
-     * @param lambda arrival rate
-     * @param mu service rate
-     * @param rho resting rate
-     * @param pr probability of resting
-     * @param pg probability of greedy customer
-     * @param queueLength maximum length of waiting queue
+     * @param seed              seed for <code>RandomGenerator</code>
+     * @param lambda            arrival rate
+     * @param mu                service rate
+     * @param rho               resting rate
+     * @param pr                probability of resting
+     * @param pg                probability of greedy customer
+     * @param queueLength       maximum length of waiting queue
      */
     public EventSimulator(int numOfServers, int numOfSelfCheckout, 
                           int seed, double lambda, double mu, double rho, 
@@ -68,6 +87,7 @@ public class EventSimulator {
 
     /**
      * Go to the next step of the simulation.
+     * 
      * @return true if this step is successfully taken
      */
     public boolean nextStep() {
@@ -84,8 +104,9 @@ public class EventSimulator {
                                             current.getCustomer().getServer());
                 result.add(prevResult);
             }
-
-            // ARRIVE event
+            /**
+             * ARRIVE event
+             **/
             if (currentEvent.getType() == Event.ARRIVES) {
                 boolean arrivedAndNotLeft = false;
                 for (int i = 0; i < Server.numOfServers; i++) {
@@ -131,15 +152,23 @@ public class EventSimulator {
                         Event.LEAVES, 
                         ((CustomerEvent) currentEvent).getCustomer());
                 }
-            // LEAVE or WAIT event
+            /**
+             * LEAVE or WAIT event
+             */
             } else if (currentEvent.getType() == Event.LEAVES
                     || currentEvent.getType() == Event.WAITS) {
-                // Server doesn't need to deal with LEAVES and WAITS events
+                /**
+                 * Server doesn't need to deal with LEAVES and WAITS events
+                 */
                 return true;
-            // BACK event
+            /**
+             * BACK event
+             */
             } else if (currentEvent.getType() == Event.BACK) {
                 toBeAdded = ((ServerEvent) currentEvent).getServer().beBack();
-            // SERVED or DONE event
+            /**
+             * SERVED or DONE event
+             */
             } else {
                 if (currentEvent.getType() == Event.BACK) {
                     toBeAdded = ((ServerEvent) currentEvent).getServer().beBack();
@@ -152,10 +181,10 @@ public class EventSimulator {
                                                 .getCustomer().getServer();
                         if (currentServer.isResting()) {
                             result.add(new Result(currentEvent.getTime(), 
-                                            Server.SERVER_REST, 
+                                            Event.SERVER_REST, 
                                             currentServer));
                             result.add(new Result(currentServer.getBackTime(), 
-                                            Server.SERVER_BACK, 
+                                            Event.SERVER_BACK, 
                                             currentServer));
                             events.add(new ServerEvent(currentServer.getBackTime(), 
                                             Event.BACK, 
@@ -189,6 +218,7 @@ public class EventSimulator {
 
     /**
      * Get the output result.
+     * 
      * @return a priority queue storing the events as Customer objects
      */
     public PriorityQueue<Result> getResult() {

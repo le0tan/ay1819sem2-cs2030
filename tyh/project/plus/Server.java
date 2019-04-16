@@ -1,18 +1,34 @@
+/**
+ * Server that takes in a <code>CustomerEvent</code>, change its state (if necessary),
+ * and output the subsequent event (if any).
+ * 
+ * <p>It has one <code>public static</code> field: numOfServers that keeps track
+ * of the number of servers so that we can assign IDs properly.
+ * 
+ * <p>It has seven private fields:
+ * (1) an int serverID
+ * (2) a boolean isServing indicating its availability
+ * (3) a double nextServiceTime
+ * (4) a Queue waitingQueue with customers in queue
+ * (5) a double restingProbability
+ * (6) a boolean isResting also indicating its availability
+ * 
+ * <p>It has one protected field: a boolean needRest, 
+ * because <code>SelfCheckoutCounter</code> needs to inherit it 
+ * from this class.
+ * 
+ * @author Tan Yuanhong
+ */
+
 package cs2030.simulator;
 
 import java.util.Queue;
 import java.util.LinkedList;
 
-/**
- * Server that serves customers.
- */
-
 public class Server {
 
-    public static final int SERVER_REST = -1;
-    public static final int SERVER_BACK = -2;
     public static int numOfServers = 0;
-    public int serverID;
+    private int serverID;
     private boolean isServing;
     private double nextServiceTime;
     private Queue<Customer> waitingQueue;
@@ -23,8 +39,9 @@ public class Server {
 
     /**
      * Constructor for <code>Server</code>.
-     * @param queueLength length of waiting queue
-     * @param restingProbability probability of resting
+     * 
+     * @param queueLength           length of waiting queue
+     * @param restingProbability    probability of resting
      */
     public Server(int queueLength, double restingProbability) {
         isServing = false;
@@ -40,6 +57,7 @@ public class Server {
 
     /**
      * Reportor for whether the server can server right away.
+     * 
      * @param time current time
      * @return a boolean describing whether the server can server right away
      */
@@ -49,6 +67,7 @@ public class Server {
 
     /**
      * Reportor for whether the server can accept a waiting customer.
+     * 
      * @return true if it can accept one more waiting customer, false otherwise
      */
     public boolean canWait() {
@@ -56,7 +75,17 @@ public class Server {
     }
 
     /**
+     * Getter for server's ID.
+     * 
+     * @return the serverID
+     */
+    public int getServerID() {
+        return serverID;
+    }
+
+    /**
      * Getter for the current queue length.
+     * 
      * @return the length of waiting queue
      */
     public int getQueueLength() {
@@ -64,7 +93,7 @@ public class Server {
     }
 
     /**
-     * Getter for <code>isResting</code> property.
+     * Setter for <code>isResting</code> property.
      */
     public void isBack() {
         this.isResting = false;
@@ -72,6 +101,7 @@ public class Server {
 
     /**
      * Method to be called when the server is back from rest.
+     * 
      * @return a new <code>CustomerEvent</code> of status <code>Event.SERVED</code>
      *          if the server is serving a customer in the waiting queue right
      *          after the break, <code>null</code> otherwise
@@ -88,6 +118,7 @@ public class Server {
 
     /**
      * Getter for <code>isResting</code> property.
+     * 
      * @return a boolean <code>isResting</code>
      */
     public boolean isResting() {
@@ -97,6 +128,7 @@ public class Server {
 
     /**
      * Getter for <code>getBackTime</code> property.
+     * 
      * @return a boolean <code>getBackTime</code>
      */
     public double getBackTime() {
@@ -106,6 +138,7 @@ public class Server {
     /**
      * This method takes a <code>CustomerEvent</code>, 
      * process the event and returns the following one if necessary.
+     * 
      * @param customer the <code>CustomerEvent</code> that's processed
      * @return following <code>CustomerEvent</code> if there is one.
      */
@@ -175,4 +208,5 @@ public class Server {
             return null;
         }
     }
+    
 }

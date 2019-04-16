@@ -1,8 +1,19 @@
-package cs2030.simulator;
-
 /**
- * A immutable class for storing results.
+ * An immutable class for storing results.
+ * 
+ * <p>Since it is immutable, and we only print out its results
+ * as a whole, all its fields are <code>private final</code>:
+ * (1) a double time: time of the event
+ * (2) a Customer object customer: customer involved in the event (null if there isn't one)
+ * (3) a int eventType: type of the event
+ * (4) a Server object server: server involved in the event
+ * (5) a boolean isCustomerEvent: 
+ *     indicating the rough type of the event, so that output can be different.
+ * 
+ * @author Tan Yuanhong
  */
+
+package cs2030.simulator;
 
 public class Result {
     private final double time;
@@ -61,7 +72,7 @@ public class Result {
                                     customerToString(this.customer), 
                                     statusToString());
         } else {
-            return String.format("%.3f server %d %s", time, server.serverID, statusToString());
+            return String.format("%.3f server %d %s", time, server.getServerID(), statusToString());
         }
     }
 
@@ -81,9 +92,9 @@ public class Result {
                 return String.format("waits to be served by %s", serverToString(server));
             case Event.SERVED:
                 return String.format("served by %s", serverToString(server));
-            case Server.SERVER_REST:
+            case Event.SERVER_REST:
                 return "rest";
-            case Server.SERVER_BACK:
+            case Event.SERVER_BACK:
                 return "back";
             default:
                 return "error";
@@ -97,9 +108,9 @@ public class Result {
      */
     private String serverToString(Server s) {
         if (s instanceof SelfCheckoutCounter) {
-            return String.format("self-check %d", s.serverID);
+            return String.format("self-check %d", s.getServerID());
         } else {
-            return String.format("server %d", s.serverID);
+            return String.format("server %d", s.getServerID());
         }
     }
 

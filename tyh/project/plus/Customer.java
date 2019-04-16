@@ -1,10 +1,21 @@
+/**
+ * Describes the status and basic information of
+ * a <code>Customer</code>. 
+ * 
+ * <p>It has six private instance fields: timeOfArrival, timeOfService, 
+ * durationOfService, customerID, server and isGreedy whose variable
+ * names are self-explanatory.
+ * 
+ * <p>It also comes with a <code>public static</code> counter named
+ * <code>numOfCustomers</code> which is used to keep track of
+ * the total number of customers so that we can assign correct IDs for
+ * them.
+ * 
+ * @author Tan Yuanhong
+ */
+
 package cs2030.simulator;
 
-/**
- * Customer class describes the status and basic information of
- * a customer. It also can be stored as a description of an event
- * related with that customer.
- */
 public class Customer {
 
     public static int numOfCustomers = 0;
@@ -18,6 +29,7 @@ public class Customer {
     /**
      * Constructor for initializing the customer array 
      * (when <code>isGreedy</code> can be put as <code>false</code> in default).
+     * 
      * @param time the time of arrival
      */
     public Customer(double time) {
@@ -31,8 +43,9 @@ public class Customer {
 
     /**
      * Constructor for initializing the customer array.
-     * @param time time of arrival
-     * @param greedy if the customer is greedy
+     * 
+     * @param time      time of arrival
+     * @param greedy    if the customer is greedy
      */
     public Customer(double time, boolean greedy) {
         this.timeOfArrival = time;
@@ -45,6 +58,7 @@ public class Customer {
 
     /**
      * Getter for <code>isGreedy</code> property.
+     * 
      * @return <code>isGreedy</code> property
      */
     public boolean isGreedy() {
@@ -54,6 +68,7 @@ public class Customer {
 
     /**
      * Returns the time of arrival.
+     * 
      * @return time of arrival
      */
     public double getTimeOfArrival() {
@@ -62,6 +77,7 @@ public class Customer {
 
     /**
      * Returns the time of service.
+     * 
      * @return time of service
      */
     public double getTimeOfService() {
@@ -70,6 +86,7 @@ public class Customer {
 
     /**
      * Returns the customer ID.
+     * 
      * @return customer ID
      */
     public int getCustomerID() {
@@ -78,6 +95,7 @@ public class Customer {
 
     /**
      * Returns whom served the customer (null if the customer is not served yet).
+     * 
      * @return whom served the customer
      */
     public Server getServer() {
@@ -86,6 +104,7 @@ public class Customer {
 
     /**
      * Returns the duration of service.
+     * 
      * @return the duration of service.
      */
     public double getDurationOfService() {
@@ -94,6 +113,7 @@ public class Customer {
 
     /**
      * Setter for server.
+     * 
      * @param server the server to set
      */
     public void setServer(Server server) {

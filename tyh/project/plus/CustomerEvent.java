@@ -1,8 +1,17 @@
+/**
+ * Provides an implementation of <code>Event</code>
+ * interface for events related with customers.
+ * 
+ * <p>Three basic instance fields are (1) time (of the event), (2) type (of the 
+ * event), (3) customer (involved in the event). Note that <code>type</code> is
+ * of <code>int</code> type because it will be assigned with values from constants
+ * from <code>Event</code> class that represents different types of events.
+ * 
+ * @author Tan Yuanhong
+ */
+
 package cs2030.simulator;
 
-/**
- * CustomerEvent.
- */
 public class CustomerEvent implements Event {
 
     private double time;
@@ -11,9 +20,10 @@ public class CustomerEvent implements Event {
 
     /**
      * Constructor for a <code>CustomerEvent</code>.
-     * @param time time of event
-     * @param type event type
-     * @param customer customer involved in the event
+     * 
+     * @param time      time of event
+     * @param type      event type
+     * @param customer  customer involved in the event
      */
     public CustomerEvent(double time, int type, Customer customer) {
         this.time = time;
@@ -33,6 +43,7 @@ public class CustomerEvent implements Event {
     
     /**
      * Getter for the customer.
+     * 
      * @return the customer
      */
     public Customer getCustomer() {

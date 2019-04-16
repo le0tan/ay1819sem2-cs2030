@@ -1,10 +1,19 @@
+/**
+ * Comparator for two events so that they are processed in the right order.
+ * 
+ * <p>The order of comparison is:
+ * (1) time of event
+ * (2) if both are customers, first compare their IDs, when IDs are different, 
+ * the one with a smaller ID comes first, otherwise returns the event with
+ * higher priority (as defined in <code>Event</code> class) comes first.
+ * (3) if one of which is a <code>ServerEvent</code>, SERVER_REST comes last.
+ * 
+ * @author Tan Yuanhong
+ */
+
 package cs2030.simulator;
 
 import java.util.Comparator;
-
-/**
- * Comparator for two events so that they are processed in the right order.
- */
 
 public class EventComparator implements Comparator<Event> {
 
@@ -23,13 +32,13 @@ public class EventComparator implements Comparator<Event> {
                 }
             } else {
                 if (o1 instanceof CustomerEvent) {
-                    if (o2.getType() == Server.SERVER_REST) {
+                    if (o2.getType() == Event.SERVER_REST) {
                         return -1;
                     } else {
                         return 1;
                     }
                 } else {
-                    if (o1.getType() == Server.SERVER_REST) {
+                    if (o1.getType() == Event.SERVER_REST) {
                         return 1;
                     } else {
                         return -1;

@@ -1,8 +1,16 @@
-package cs2030.simulator;
-
 /**
- * A class dealing with storing and processing statistics.
+ * A class dealing with storing, processing and outputing statistics.
+ * 
+ * <p>All its three fields are public because <code>EventSimulator</code> needs
+ * to change the statistics' values:
+ * (1) an int numOfCustomersServed
+ * (2) an int numOfCustomersLeft
+ * (3) a double totalWaitingTime
+ * 
+ * @author Tan Yuanhong
  */
+
+package cs2030.simulator;
 
 public class Statistics {
 
