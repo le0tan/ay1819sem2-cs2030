@@ -217,6 +217,13 @@ public class EventSimulator {
     }
 
     /**
+     * Process the events until no new events can be created.
+     */
+    public void simulate() {
+        while (nextStep()) { }
+    }
+
+    /**
      * Get the output result.
      * 
      * @return a priority queue storing the events as Customer objects

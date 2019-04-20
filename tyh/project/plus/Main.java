@@ -51,12 +51,7 @@ public class Main {
         for (int i = 0; i < numOfCustomers; i++) {
             es.addCustomer();
         }
-        /**
-         * An empty while loop to run nextStep() repeated until
-         * no more events can be processed.
-         */
-        while (es.nextStep()) {
-        }
+        es.simulate();
         PriorityQueue<Result> result = es.getResult();
         while (!result.isEmpty()) {
             System.out.println(result.poll());
