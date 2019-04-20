@@ -34,19 +34,19 @@ public class EventComparator implements Comparator<Event> {
                 CustomerEvent c1 = (CustomerEvent) o1;
                 CustomerEvent c2 = (CustomerEvent) o2;
                 if (c1.getCustomer().getCustomerID() - c2.getCustomer().getCustomerID() == 0) {
-                    return c1.getType() - c2.getType();
+                    return c1.getType().compareTo(c2.getType());
                 } else {
                     return c1.getCustomer().getCustomerID() - c2.getCustomer().getCustomerID();
                 }
             } else {
                 if (o1 instanceof CustomerEvent) {
-                    if (o2.getType() == Event.SERVER_REST) {
+                    if (o2.getType() == EventType.SERVER_REST) {
                         return -1;
                     } else {
                         return 1;
                     }
                 } else {
-                    if (o1.getType() == Event.SERVER_REST) {
+                    if (o1.getType() == EventType.SERVER_REST) {
                         return 1;
                     } else {
                         return -1;

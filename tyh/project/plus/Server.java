@@ -110,7 +110,7 @@ public class Server {
         isBack();
         if (!this.waitingQueue.isEmpty()) {
             Customer a = this.waitingQueue.poll();
-            return new CustomerEvent(nextServiceTime, Event.SERVED, a);
+            return new CustomerEvent(nextServiceTime, EventType.SERVED, a);
         } else {
             return null;
         }
@@ -146,28 +146,28 @@ public class Server {
         CustomerEvent returnedCustomer = null;
         boolean shouldReturn = true;
         switch (customer.getType()) {
-            case Event.ARRIVES:
+            case ARRIVES:
                 if (customer.getTime() >= nextServiceTime) {
                     customer.getCustomer().setServer(this);
                     returnedCustomer = new CustomerEvent(
                                             customer.getTime(), 
-                                            Event.SERVED, 
+                                            EventType.SERVED, 
                                             customer.getCustomer());
                 } else if (canWait()) {
                     customer.getCustomer().setServer(this);
                     returnedCustomer = new CustomerEvent(
                                             customer.getTime(), 
-                                            Event.WAITS, 
+                                            EventType.WAITS, 
                                             customer.getCustomer());
                     this.waitingQueue.add(customer.getCustomer());
                 } else {
                     returnedCustomer = new CustomerEvent(
                                             customer.getTime(), 
-                                            Event.LEAVES, 
+                                            EventType.LEAVES, 
                                             customer.getCustomer());
                 }
                 break;
-            case Event.SERVED:
+            case SERVED:
                 isServing = true;
                 double serviceTime = EventSimulator.randomGenerator.genServiceTime();
                 nextServiceTime = customer.getTime() + serviceTime;
@@ -175,10 +175,10 @@ public class Server {
                 customer.getCustomer().setDurationOfService(serviceTime);
                 returnedCustomer = new CustomerEvent(
                                         nextServiceTime, 
-                                        Event.DONE, 
+                                        EventType.DONE, 
                                         customer.getCustomer());
                 break;
-            case Event.DONE:
+            case DONE:
                 isServing = false;
                 if (this.needRest 
                     && EventSimulator.randomGenerator.genRandomRest() 
@@ -190,7 +190,7 @@ public class Server {
                 } else {
                     if (!this.waitingQueue.isEmpty()) {
                         Customer a = this.waitingQueue.poll();
-                        returnedCustomer = new CustomerEvent(nextServiceTime, Event.SERVED, a);
+                        returnedCustomer = new CustomerEvent(nextServiceTime, EventType.SERVED, a);
                         a.setTimeOfService(customer.getTime());
                     } else {
                         shouldReturn = false;

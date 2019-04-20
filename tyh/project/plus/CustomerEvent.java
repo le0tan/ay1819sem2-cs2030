@@ -15,7 +15,7 @@ package cs2030.simulator;
 public class CustomerEvent implements Event {
 
     private double time;
-    private int type;
+    private EventType type;
     private Customer customer;
 
     /**
@@ -25,7 +25,7 @@ public class CustomerEvent implements Event {
      * @param type      event type
      * @param customer  customer involved in the event
      */
-    public CustomerEvent(double time, int type, Customer customer) {
+    public CustomerEvent(double time, EventType type, Customer customer) {
         this.time = time;
         this.type = type;
         this.customer = customer;
@@ -37,7 +37,7 @@ public class CustomerEvent implements Event {
     }
 
     @Override
-    public int getType() {
+    public EventType getType() {
         return this.type;
     }
     

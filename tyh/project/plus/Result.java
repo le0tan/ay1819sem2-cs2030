@@ -7,7 +7,7 @@ package cs2030.simulator;
  * as a whole, all its fields are <code>private final</code>:
  * (1) a double time: time of the event
  * (2) a Customer object customer: customer involved in the event (null if there isn't one)
- * (3) a int eventType: type of the event
+ * (3) a eventType: type of the event
  * (4) a Server object server: server involved in the event
  * (5) a boolean isCustomerEvent: 
  *     indicating the rough type of the event, so that output can be different.
@@ -18,7 +18,7 @@ package cs2030.simulator;
 public class Result {
     private final double time;
     private final Customer customer;
-    private final int eventType;
+    private final EventType eventType;
     private final Server server;
     private final boolean isCustomerEvent;
 
@@ -38,7 +38,7 @@ public class Result {
      * @param eventType type of the event
      * @param server whom served the customer in this event (null if there isn't any)
      */
-    public Result(double time, Customer customer, int eventType, Server server) {
+    public Result(double time, Customer customer, EventType eventType, Server server) {
         this.time = time;
         this.customer = customer;
         this.eventType = eventType;
@@ -52,7 +52,7 @@ public class Result {
      * @param eventType type of event
      * @param server server
      */
-    public Result(double time, int eventType, Server server) {
+    public Result(double time, EventType eventType, Server server) {
         this.time = time;
         this.eventType = eventType;
         this.server = server;
@@ -82,19 +82,19 @@ public class Result {
      */
     private String statusToString() {
         switch (eventType) {
-            case Event.DONE:
+            case DONE:
                 return String.format("done serving by %s", serverToString(server));
-            case Event.ARRIVES:
+            case ARRIVES:
                 return "arrives";
-            case Event.LEAVES:
+            case LEAVES:
                 return "leaves";
-            case Event.WAITS:
+            case WAITS:
                 return String.format("waits to be served by %s", serverToString(server));
-            case Event.SERVED:
+            case SERVED:
                 return String.format("served by %s", serverToString(server));
-            case Event.SERVER_REST:
+            case SERVER_REST:
                 return "rest";
-            case Event.SERVER_BACK:
+            case SERVER_BACK:
                 return "back";
             default:
                 return "error";
@@ -147,7 +147,7 @@ public class Result {
      * Getter for type of the event.
      * @return eventType
      */
-    public int getEventType() {
+    public EventType getEventType() {
         return eventType;
     }
 }

@@ -15,7 +15,7 @@ package cs2030.simulator;
 public class ServerEvent implements Event {
 
     private double time;
-    private int type;
+    private EventType type;
     private Server server;
 
     /**
@@ -24,7 +24,7 @@ public class ServerEvent implements Event {
      * @param type type of event
      * @param server the server
      */
-    public ServerEvent(double time, int type, Server server) {
+    public ServerEvent(double time, EventType type, Server server) {
         this.time = time;
         this.type = type;
         this.server = server;
@@ -36,7 +36,7 @@ public class ServerEvent implements Event {
     }
 
     @Override
-    public int getType() {
+    public EventType getType() {
         return this.type;
     }
 

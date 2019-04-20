@@ -75,12 +75,12 @@ public class EventSimulator {
         if (randomGenerator.genCustomerType() < this.probabilityOfGreedy) {
             Customer currentCustomer = new GreedyCustomer(currentTime);
             customers.add(currentCustomer);
-            events.add(new CustomerEvent(currentTime, Event.ARRIVES, currentCustomer));
+            events.add(new CustomerEvent(currentTime, EventType.ARRIVES, currentCustomer));
             currentTime += randomGenerator.genInterArrivalTime();
         } else {
             Customer currentCustomer = new Customer(currentTime);
             customers.add(currentCustomer);
-            events.add(new CustomerEvent(currentTime, Event.ARRIVES, currentCustomer));
+            events.add(new CustomerEvent(currentTime, EventType.ARRIVES, currentCustomer));
             currentTime += randomGenerator.genInterArrivalTime();
         }
     }
@@ -96,7 +96,7 @@ public class EventSimulator {
         } else {
             Event currentEvent = events.poll();
             Event toBeAdded = null;
-            if (currentEvent.getType() != Event.BACK) {
+            if (currentEvent.getType() != EventType.BACK) {
                 CustomerEvent current = (CustomerEvent) currentEvent;
                 Result prevResult = new Result(current.getTime(),
                                             current.getCustomer(),
@@ -107,7 +107,7 @@ public class EventSimulator {
             /**
              * ARRIVE event
              **/
-            if (currentEvent.getType() == Event.ARRIVES) {
+            if (currentEvent.getType() == EventType.ARRIVES) {
                 boolean arrivedAndNotLeft = false;
                 for (int i = 0; i < Server.numOfServers; i++) {
                     if (servers[i].canServeImmediately(currentEvent.getTime())) {
@@ -149,14 +149,14 @@ public class EventSimulator {
                 if (!arrivedAndNotLeft) {
                     toBeAdded = new CustomerEvent(
                         currentEvent.getTime(), 
-                        Event.LEAVES, 
+                        EventType.LEAVES, 
                         ((CustomerEvent) currentEvent).getCustomer());
                 }
             /**
              * LEAVE or WAIT event
              */
-            } else if (currentEvent.getType() == Event.LEAVES
-                    || currentEvent.getType() == Event.WAITS) {
+            } else if (currentEvent.getType() == EventType.LEAVES
+                    || currentEvent.getType() == EventType.WAITS) {
                 /**
                  * Server doesn't need to deal with LEAVES and WAITS events
                  */
@@ -164,13 +164,13 @@ public class EventSimulator {
             /**
              * BACK event
              */
-            } else if (currentEvent.getType() == Event.BACK) {
+            } else if (currentEvent.getType() == EventType.BACK) {
                 toBeAdded = ((ServerEvent) currentEvent).getServer().beBack();
             /**
              * SERVED or DONE event
              */
             } else {
-                if (currentEvent.getType() == Event.BACK) {
+                if (currentEvent.getType() == EventType.BACK) {
                     toBeAdded = ((ServerEvent) currentEvent).getServer().beBack();
                 } else {
                     toBeAdded = ((CustomerEvent) currentEvent).getCustomer()
@@ -181,13 +181,13 @@ public class EventSimulator {
                                                 .getCustomer().getServer();
                         if (currentServer.isResting()) {
                             result.add(new Result(currentEvent.getTime(), 
-                                            Event.SERVER_REST, 
+                                            EventType.SERVER_REST, 
                                             currentServer));
                             result.add(new Result(currentServer.getBackTime(), 
-                                            Event.SERVER_BACK, 
+                                            EventType.SERVER_BACK, 
                                             currentServer));
                             events.add(new ServerEvent(currentServer.getBackTime(), 
-                                            Event.BACK, 
+                                            EventType.BACK, 
                                             ((CustomerEvent) currentEvent)
                                                 .getCustomer()
                                                 .getServer()));
@@ -196,7 +196,7 @@ public class EventSimulator {
                 }
             }
             if (toBeAdded != null) {
-                if (toBeAdded.getType() == Event.DONE) {
+                if (toBeAdded.getType() == EventType.DONE) {
                     statistics.numOfCustomersServed++;
                     statistics.totalWaitingTime += 
                         (((CustomerEvent) toBeAdded)
@@ -206,7 +206,7 @@ public class EventSimulator {
                         ((CustomerEvent) toBeAdded)
                             .getCustomer()
                             .getTimeOfArrival());
-                } else if (toBeAdded.getType() == Event.LEAVES) {
+                } else if (toBeAdded.getType() == EventType.LEAVES) {
                     statistics.numOfCustomersLeft++;
                 }
                 events.add(toBeAdded);
