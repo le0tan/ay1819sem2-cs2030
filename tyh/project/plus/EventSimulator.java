@@ -86,6 +86,124 @@ public class EventSimulator {
     }
 
     /**
+     * Process ARRIVE event, return the event to be added when
+     * necessary.
+     * 
+     * @param currentEvent the event that's being processed
+     * @return event to be added, null if there isn't any
+     */
+    private Event processArriveEvent(Event currentEvent) {
+        boolean arrivedAndNotLeft = false;
+        Event toBeAdded = null;
+        for (int i = 0; i < Server.numOfServers; i++) {
+            if (servers[i].canServeImmediately(currentEvent.getTime())) {
+                toBeAdded = servers[i].serve((CustomerEvent) currentEvent);
+                arrivedAndNotLeft = true;
+                break;
+            }
+        }
+        if (!arrivedAndNotLeft) {
+            if (!((CustomerEvent) currentEvent).getCustomer().isGreedy()) {
+                for (int i = 0; i < Server.numOfServers; i++) {
+                    if (servers[i].canWait()) {
+                        toBeAdded = servers[i].serve((CustomerEvent) currentEvent);
+                        arrivedAndNotLeft = true;
+                        break;
+                    }
+                }
+            } else {
+                int chosenServer = -1;
+                for (int i = 0; i < Server.numOfServers; i++) {
+                    if (servers[i].canWait()) {
+                        if (chosenServer == -1) {
+                            chosenServer = i;
+                        } else {
+                            if (servers[i].getQueueLength() 
+                                < 
+                                servers[chosenServer].getQueueLength()) {
+                                chosenServer = i;
+                            }
+                        }
+                    }
+                }
+                if (chosenServer != -1) {
+                    toBeAdded = servers[chosenServer].serve((CustomerEvent) currentEvent);
+                    arrivedAndNotLeft = true;
+                }
+            }
+        }
+        if (!arrivedAndNotLeft) {
+            toBeAdded = new CustomerEvent(
+                currentEvent.getTime(), 
+                EventType.LEAVES, 
+                ((CustomerEvent) currentEvent).getCustomer());
+        }
+        return toBeAdded;
+    }
+
+    /**
+     * Process BACK event.
+     * 
+     * @param currentEvent the event that's being processed
+     * @return event to be added
+     */
+    private Event processBackEvent(Event currentEvent) {
+        return ((ServerEvent) currentEvent).getServer().beBack();
+    }
+
+    /**
+     * Process SERVED or DONE event, return the event to be added when
+     * necessary.
+     * 
+     * @param currentEvent the event that's being processed
+     * @return event to be added, null if there isn't any
+     */
+    private Event processServedOrDoneEvent(Event currentEvent) {
+        Event toBeAdded = ((CustomerEvent) currentEvent).getCustomer()
+                                .getServer()
+                                .serve((CustomerEvent) currentEvent);
+        if (toBeAdded == null) {
+            Server currentServer = ((CustomerEvent) currentEvent)
+                                    .getCustomer().getServer();
+            if (currentServer.isResting()) {
+                result.add(new Result(currentEvent.getTime(), 
+                                EventType.SERVER_REST, 
+                                currentServer));
+                result.add(new Result(currentServer.getBackTime(), 
+                                EventType.SERVER_BACK, 
+                                currentServer));
+                events.add(new ServerEvent(currentServer.getBackTime(), 
+                                EventType.BACK, 
+                                ((CustomerEvent) currentEvent)
+                                    .getCustomer()
+                                    .getServer()));
+            }
+        }
+        return toBeAdded;
+    }
+
+    /**
+     * Update the statistics based on the newly added event.
+     * 
+     * @param toBeAdded the newly added event
+     */
+    private void updateStatistics(Event toBeAdded) {
+        if (toBeAdded.getType() == EventType.DONE) {
+            statistics.numOfCustomersServed++;
+            statistics.totalWaitingTime += 
+                (((CustomerEvent) toBeAdded)
+                    .getCustomer()
+                    .getTimeOfService() 
+                - 
+                ((CustomerEvent) toBeAdded)
+                    .getCustomer()
+                    .getTimeOfArrival());
+        } else if (toBeAdded.getType() == EventType.LEAVES) {
+            statistics.numOfCustomersLeft++;
+        }
+    }
+
+    /**
      * Go to the next step of the simulation.
      * 
      * @return true if this step is successfully taken
@@ -96,6 +214,7 @@ public class EventSimulator {
         } else {
             Event currentEvent = events.poll();
             Event toBeAdded = null;
+
             if (currentEvent.getType() != EventType.BACK) {
                 CustomerEvent current = (CustomerEvent) currentEvent;
                 Result prevResult = new Result(current.getTime(),
@@ -104,114 +223,32 @@ public class EventSimulator {
                                             current.getCustomer().getServer());
                 result.add(prevResult);
             }
-            /**
-             * ARRIVE event
-             **/
-            if (currentEvent.getType() == EventType.ARRIVES) {
-                boolean arrivedAndNotLeft = false;
-                for (int i = 0; i < Server.numOfServers; i++) {
-                    if (servers[i].canServeImmediately(currentEvent.getTime())) {
-                        toBeAdded = servers[i].serve((CustomerEvent) currentEvent);
-                        arrivedAndNotLeft = true;
-                        break;
-                    }
-                }
-                if (!arrivedAndNotLeft) {
-                    if (!((CustomerEvent) currentEvent).getCustomer().isGreedy()) {
-                        for (int i = 0; i < Server.numOfServers; i++) {
-                            if (servers[i].canWait()) {
-                                toBeAdded = servers[i].serve((CustomerEvent) currentEvent);
-                                arrivedAndNotLeft = true;
-                                break;
-                            }
-                        }
-                    } else {
-                        int chosenServer = -1;
-                        for (int i = 0; i < Server.numOfServers; i++) {
-                            if (servers[i].canWait()) {
-                                if (chosenServer == -1) {
-                                    chosenServer = i;
-                                } else {
-                                    if (servers[i].getQueueLength() 
-                                        < 
-                                        servers[chosenServer].getQueueLength()) {
-                                        chosenServer = i;
-                                    }
-                                }
-                            }
-                        }
-                        if (chosenServer != -1) {
-                            toBeAdded = servers[chosenServer].serve((CustomerEvent) currentEvent);
-                            arrivedAndNotLeft = true;
-                        }
-                    }
-                }
-                if (!arrivedAndNotLeft) {
-                    toBeAdded = new CustomerEvent(
-                        currentEvent.getTime(), 
-                        EventType.LEAVES, 
-                        ((CustomerEvent) currentEvent).getCustomer());
-                }
-            /**
-             * LEAVE or WAIT event
-             */
-            } else if (currentEvent.getType() == EventType.LEAVES
-                    || currentEvent.getType() == EventType.WAITS) {
-                /**
-                 * Server doesn't need to deal with LEAVES and WAITS events
-                 */
-                return true;
-            /**
-             * BACK event
-             */
-            } else if (currentEvent.getType() == EventType.BACK) {
-                toBeAdded = ((ServerEvent) currentEvent).getServer().beBack();
-            /**
-             * SERVED or DONE event
-             */
-            } else {
-                if (currentEvent.getType() == EventType.BACK) {
-                    toBeAdded = ((ServerEvent) currentEvent).getServer().beBack();
-                } else {
-                    toBeAdded = ((CustomerEvent) currentEvent).getCustomer()
-                                    .getServer()
-                                    .serve((CustomerEvent) currentEvent);
-                    if (toBeAdded == null) {
-                        Server currentServer = ((CustomerEvent) currentEvent)
-                                                .getCustomer().getServer();
-                        if (currentServer.isResting()) {
-                            result.add(new Result(currentEvent.getTime(), 
-                                            EventType.SERVER_REST, 
-                                            currentServer));
-                            result.add(new Result(currentServer.getBackTime(), 
-                                            EventType.SERVER_BACK, 
-                                            currentServer));
-                            events.add(new ServerEvent(currentServer.getBackTime(), 
-                                            EventType.BACK, 
-                                            ((CustomerEvent) currentEvent)
-                                                .getCustomer()
-                                                .getServer()));
-                        }
-                    }
-                }
+
+            switch (currentEvent.getType()) {
+                case ARRIVES:
+                    toBeAdded = processArriveEvent(currentEvent);
+                    break;
+                case LEAVES:
+                    return true;
+                case WAITS:
+                    return true;
+                case BACK:
+                    toBeAdded = processBackEvent(currentEvent);
+                    break;
+                case SERVED:
+                    toBeAdded = processServedOrDoneEvent(currentEvent);
+                    break;
+                case DONE:
+                    toBeAdded = processServedOrDoneEvent(currentEvent);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Found illegal type of event");
             }
+            
             if (toBeAdded != null) {
-                if (toBeAdded.getType() == EventType.DONE) {
-                    statistics.numOfCustomersServed++;
-                    statistics.totalWaitingTime += 
-                        (((CustomerEvent) toBeAdded)
-                            .getCustomer()
-                            .getTimeOfService() 
-                        - 
-                        ((CustomerEvent) toBeAdded)
-                            .getCustomer()
-                            .getTimeOfArrival());
-                } else if (toBeAdded.getType() == EventType.LEAVES) {
-                    statistics.numOfCustomersLeft++;
-                }
+                updateStatistics(toBeAdded);
                 events.add(toBeAdded);
             }
-
             return true;
         }
     }
