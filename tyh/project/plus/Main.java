@@ -29,13 +29,14 @@ import cs2030.simulator.Result;
 
 public class Main {
 
+    static Scanner sc = new Scanner(System.in);
+
     /**
      * Main method that runs the simulator.
      * 
      * @param args commandline arguments
      */
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
         int seed = sc.nextInt();
         int numOfServers = sc.nextInt();
         int numOfSelfCheckout = sc.nextInt();
@@ -46,17 +47,17 @@ public class Main {
         double restingRate = sc.nextDouble();
         double pr = sc.nextDouble();
         double pg = sc.nextDouble();
-        EventSimulator es = new EventSimulator(numOfServers, numOfSelfCheckout, seed, arrivalRate, 
-                            serviceRate, restingRate, pr, pg, maxLength);
+        EventSimulator eventSimulator = new EventSimulator(numOfServers, numOfSelfCheckout, seed, 
+                        arrivalRate, serviceRate, restingRate, pr, pg, maxLength);
         for (int i = 0; i < numOfCustomers; i++) {
-            es.addCustomer();
+            eventSimulator.addCustomer();
         }
-        es.simulate();
-        PriorityQueue<Result> result = es.getResult();
+        eventSimulator.simulate();
+        PriorityQueue<Result> result = eventSimulator.getResult();
         while (!result.isEmpty()) {
             System.out.println(result.poll());
         }
-        es.statistics.printStatistics();
+        eventSimulator.statistics.printStatistics();
         sc.close();
     }
 }
