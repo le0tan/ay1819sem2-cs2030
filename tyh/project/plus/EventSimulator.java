@@ -58,10 +58,14 @@ public class EventSimulator {
         servers = new Server[numOfServers + numOfSelfCheckout];
         this.probabilityOfGreedy = pg;
         for (int i = 0; i < numOfServers; i++) {
-            servers[i] = new Server(queueLength, pr);
+            servers[i] = new Server(queueLength, pr, 
+                            () -> randomGenerator.genRandomRest(), 
+                            () -> randomGenerator.genRestPeriod());
         }
         for (int i = numOfServers; i < numOfServers + numOfSelfCheckout; i++) {
-            servers[i] = new SelfCheckoutCounter(queueLength, pr);
+            servers[i] = new SelfCheckoutCounter(queueLength, pr,
+                            () -> randomGenerator.genRandomRest(), 
+                            () -> randomGenerator.genRestPeriod());
         }
         statistics = new Statistics();
         randomGenerator = new RandomGenerator(seed, lambda, mu, rho);
@@ -73,12 +77,12 @@ public class EventSimulator {
      */
     public void addCustomer() {
         if (randomGenerator.genCustomerType() < this.probabilityOfGreedy) {
-            Customer currentCustomer = new GreedyCustomer(currentTime);
+            Customer currentCustomer = new GreedyCustomer(currentTime, () -> randomGenerator.genServiceTime());
             customers.add(currentCustomer);
             events.add(new CustomerEvent(currentTime, EventType.ARRIVES, currentCustomer));
             currentTime += randomGenerator.genInterArrivalTime();
         } else {
-            Customer currentCustomer = new Customer(currentTime);
+            Customer currentCustomer = new Customer(currentTime, () -> randomGenerator.genServiceTime());
             customers.add(currentCustomer);
             events.add(new CustomerEvent(currentTime, EventType.ARRIVES, currentCustomer));
             currentTime += randomGenerator.genInterArrivalTime();

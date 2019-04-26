@@ -2,31 +2,28 @@ package cs2030.simulator;
 
 /**
  * Provides an implementation of <code>Event</code>
- * interface for events related with servers.
+ * abstract class for events related with servers.
  * 
- * <p>Three basic instance fields are (1) time (of the event), (2) type (of the 
- * event), (3) server (involved in the event). Note that <code>type</code> is
- * of <code>int</code> type because it will be assigned with values from constants
- * from <code>Event</code> class that represents different types of events.
+ * <p>In addition to instance fields specified in <code>Event</code>, 
+ * we have additional <code>final</code> field named server for 
+ * the server involved in the event.
  * 
  * @author Tan Yuanhong
  */
 
-public class ServerEvent implements Event {
+public class ServerEvent extends Event {
 
-    private double time;
-    private EventType type;
-    private Server server;
+    protected final Server server;
 
     /**
      * Constructor for <code>ServerEvent</code>.
+     * 
      * @param time time of event
      * @param type type of event
      * @param server the server
      */
     public ServerEvent(double time, EventType type, Server server) {
-        this.time = time;
-        this.type = type;
+        super(time, type);
         this.server = server;
     }
 
@@ -42,7 +39,8 @@ public class ServerEvent implements Event {
 
     /**
      * Getter for the <code>server</code> property of a <code>ServerEvent</code>.
-     * @return the server
+     * 
+     * @return the server involved in the event
      */
     public Server getServer() {
         return server;

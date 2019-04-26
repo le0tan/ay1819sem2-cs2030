@@ -2,21 +2,18 @@ package cs2030.simulator;
 
 /**
  * Provides an implementation of <code>Event</code>
- * interface for events related with customers.
+ * abstract class for events related with customers.
  * 
- * <p>Three basic instance fields are (1) time (of the event), (2) type (of the 
- * event), (3) customer (involved in the event). Note that <code>type</code> is
- * of <code>int</code> type because it will be assigned with values from constants
- * from <code>Event</code> class that represents different types of events.
+ * <p>In addition to instance fields specified in <code>Event</code>, 
+ * we have additional <code>final</code> field named customer for 
+ * the customer involved in the event.
  * 
  * @author Tan Yuanhong
  */
 
-public class CustomerEvent implements Event {
+public class CustomerEvent extends Event {
 
-    private double time;
-    private EventType type;
-    private Customer customer;
+    protected final Customer customer;
 
     /**
      * Constructor for a <code>CustomerEvent</code>.
@@ -26,9 +23,28 @@ public class CustomerEvent implements Event {
      * @param customer  customer involved in the event
      */
     public CustomerEvent(double time, EventType type, Customer customer) {
-        this.time = time;
-        this.type = type;
+        super(time, type);
         this.customer = customer;
+    }
+
+    /**
+     * A functional implementation of setTime.
+     * 
+     * @param time  time of event
+     * @return a new <code>CustomerEvent</code> object with the changed time
+     */
+    public CustomerEvent setTime(double time) {
+        return new CustomerEvent(time, this.type, this.customer);
+    }
+
+    /**
+     * A functional implementation of setType.
+     * 
+     * @param type  type of event
+     * @return a new <code>CustomerEvent</code> object with the changed event type
+     */
+    public CustomerEvent setType(EventType type) {
+        return new CustomerEvent(this.time, type, this.customer);
     }
 
     @Override
@@ -44,7 +60,7 @@ public class CustomerEvent implements Event {
     /**
      * Getter for the customer.
      * 
-     * @return the customer
+     * @return the customer involved in the event
      */
     public Customer getCustomer() {
         return customer;

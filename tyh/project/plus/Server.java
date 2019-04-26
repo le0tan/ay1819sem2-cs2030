@@ -1,6 +1,7 @@
 package cs2030.simulator;
 
 import java.util.Queue;
+import java.util.function.Supplier;
 import java.util.LinkedList;
 
 /**
@@ -10,13 +11,14 @@ import java.util.LinkedList;
  * <p>It has one <code>public static</code> field: numOfServers that keeps track
  * of the number of servers so that we can assign IDs properly.
  * 
- * <p>It has seven private fields:
+ * <p>It has eight private fields:
  * (1) an int serverID
  * (2) a boolean isServing indicating its availability
  * (3) a double nextServiceTime
  * (4) a Queue waitingQueue with customers in queue
  * (5) a double restingProbability
  * (6) a boolean isResting also indicating its availability
+ * (7)(8) two suppliers for generating random rest time and rest period
  * 
  * <p>It has one protected field: a boolean needRest, 
  * because <code>SelfCheckoutCounter</code> needs to inherit it 
@@ -35,6 +37,8 @@ public class Server {
     private int queueLength;
     private double restingProbability;
     private boolean isResting;
+    private Supplier<Double> randomRestSupplier;
+    private Supplier<Double> restPeriodSupplier;
     protected boolean needRest;
 
     /**
@@ -42,8 +46,12 @@ public class Server {
      * 
      * @param queueLength           length of waiting queue
      * @param restingProbability    probability of resting
+     * @param randomRestSupplier    supplier for random rest time
+     * @param restPeriodSupplier    supplier for random rest period
      */
-    public Server(int queueLength, double restingProbability) {
+    public Server(int queueLength, double restingProbability, 
+        Supplier<Double> randomRestSupplier,
+        Supplier<Double> restPeriodSupplier) {
         isServing = false;
         nextServiceTime = 0.0;
         numOfServers++;
@@ -53,6 +61,8 @@ public class Server {
         this.restingProbability = restingProbability;
         this.isResting = false;
         this.needRest = true;
+        this.randomRestSupplier = randomRestSupplier;
+        this.restPeriodSupplier = restPeriodSupplier;
     }
 
     /**
@@ -93,13 +103,6 @@ public class Server {
     }
 
     /**
-     * Setter for <code>isResting</code> property.
-     */
-    public void isBack() {
-        this.isResting = false;
-    }
-
-    /**
      * Method to be called when the server is back from rest.
      * 
      * @return a new <code>CustomerEvent</code> of status <code>Event.SERVED</code>
@@ -107,10 +110,10 @@ public class Server {
      *          after the break, <code>null</code> otherwise
      */
     public CustomerEvent beBack() {
-        isBack();
+        this.isResting = false;
         if (!this.waitingQueue.isEmpty()) {
-            Customer a = this.waitingQueue.poll();
-            return new CustomerEvent(nextServiceTime, EventType.SERVED, a);
+            Customer next = this.waitingQueue.poll();
+            return new CustomerEvent(nextServiceTime, EventType.SERVED, next);
         } else {
             return null;
         }
@@ -149,56 +152,45 @@ public class Server {
             case ARRIVES:
                 if (customer.getTime() >= nextServiceTime) {
                     customer.getCustomer().setServer(this);
-                    returnedCustomer = new CustomerEvent(
-                                            customer.getTime(), 
-                                            EventType.SERVED, 
-                                            customer.getCustomer());
+                    returnedCustomer = customer.setType(EventType.SERVED);
                 } else if (canWait()) {
                     customer.getCustomer().setServer(this);
-                    returnedCustomer = new CustomerEvent(
-                                            customer.getTime(), 
-                                            EventType.WAITS, 
-                                            customer.getCustomer());
+                    returnedCustomer = customer.setType(EventType.WAITS);
                     this.waitingQueue.add(customer.getCustomer());
                 } else {
-                    returnedCustomer = new CustomerEvent(
-                                            customer.getTime(), 
-                                            EventType.LEAVES, 
-                                            customer.getCustomer());
+                    returnedCustomer = customer.setType(EventType.LEAVES);
                 }
                 break;
             case SERVED:
                 isServing = true;
-                double serviceTime = EventSimulator.randomGenerator.genServiceTime();
+                double serviceTime = customer.getCustomer().getServiceTime();
                 nextServiceTime = customer.getTime() + serviceTime;
                 customer.getCustomer().setTimeOfService(customer.getTime());
                 customer.getCustomer().setDurationOfService(serviceTime);
-                returnedCustomer = new CustomerEvent(
-                                        nextServiceTime, 
-                                        EventType.DONE, 
-                                        customer.getCustomer());
+                returnedCustomer = customer.setTime(nextServiceTime).setType(EventType.DONE);
                 break;
             case DONE:
                 isServing = false;
                 if (this.needRest 
-                    && EventSimulator.randomGenerator.genRandomRest() 
+                    && this.randomRestSupplier.get()
                         < this.restingProbability) {
-                    final double restingTime = EventSimulator.randomGenerator.genRestPeriod();
+                    final double restingTime = this.restPeriodSupplier.get();
                     this.nextServiceTime += restingTime;
                     this.isResting = true;
                     shouldReturn = false;
                 } else {
                     if (!this.waitingQueue.isEmpty()) {
-                        Customer a = this.waitingQueue.poll();
-                        returnedCustomer = new CustomerEvent(nextServiceTime, EventType.SERVED, a);
-                        a.setTimeOfService(customer.getTime());
+                        Customer current = this.waitingQueue.poll();
+                        returnedCustomer = new CustomerEvent(nextServiceTime, 
+                                            EventType.SERVED, current);
+                        current.setTimeOfService(customer.getTime());
                     } else {
                         shouldReturn = false;
                     }
                 }
                 break;
             default:
-                System.out.println("Uncaught status");
+                System.err.println("Uncaught status");
                 shouldReturn = false;
                 break;
         }

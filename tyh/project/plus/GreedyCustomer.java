@@ -1,6 +1,6 @@
 package cs2030.simulator;
 
-import cs2030.simulator.Customer;
+import java.util.function.Supplier;
 
 /**
  * A child class of <code>Customer</code> that is greedy (always 
@@ -14,10 +14,11 @@ public class GreedyCustomer extends Customer {
     /**
      * Constructor for GreedyCustomer.
      * 
-     * @param time the time of arrival
+     * @param time                  the time of arrival
+     * @param serviceTimeSupplier   supplier for service time
      */
-    public GreedyCustomer(double time) {
-        super(time);
+    public GreedyCustomer(double time, Supplier<Double> serviceTimeSupplier) {
+        super(time, serviceTimeSupplier);
     }
 
 }

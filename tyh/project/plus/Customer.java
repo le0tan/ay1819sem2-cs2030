@@ -1,14 +1,23 @@
 package cs2030.simulator;
 
+import java.util.function.Supplier;
+
 import cs2030.simulator.GreedyCustomer;
 
 /**
  * Describes the status and basic information of
  * a <code>Customer</code>. 
  * 
+ * <p>Note that <code>Customer</code> class is not written in an immutable
+ * way because in this design the simulator is actually processing
+ * <code>Event</code> instead of <code>Customer</code>. This class 
+ * is more like a log for the information about a customer.
+ * 
  * <p>It has six private instance fields: timeOfArrival, timeOfService, 
- * durationOfService, customerID, server and isGreedy whose variable
- * names are self-explanatory.
+ * durationOfService, customerID and server whose variable
+ * names are self-explanatory. And one Supplier for service time, 
+ * which is passed in during the creation of this object, in 
+ * <code>EventSimulator</code> class.
  * 
  * <p>It also comes with a <code>public static</code> counter named
  * <code>numOfCustomers</code> which is used to keep track of
@@ -26,26 +35,37 @@ public class Customer {
     private double durationOfService;
     private int customerID;
     private Server server;
-    private boolean isGreedy;
+    private Supplier<Double> serviceTimeSupplier;
 
     /**
-     * Constructor for initializing the customer array. 
+     * Constructor for initializing the <code>Customer</code> array 
+     * in <code>addCustomer()</code> method in <code>EventSimulator</code>
+     * class.
      * 
      * @param time the time of arrival
      */
-    public Customer(double time) {
+    public Customer(double time, Supplier<Double> serviceTimeSupplier) {
         this.timeOfArrival = time;
         this.timeOfService = -1.0;
         numOfCustomers++;
         this.customerID = numOfCustomers;
         this.server = null;
-        this.isGreedy = false;
+        this.serviceTimeSupplier = serviceTimeSupplier;
     }
 
     /**
-     * Getter for <code>isGreedy</code> property.
+     * Generate the service time from the random generator.
      * 
-     * @return <code>isGreedy</code> property
+     * @return service time for this customer
+     */
+    public double getServiceTime() {
+        return this.serviceTimeSupplier.get();
+    }
+
+    /**
+     * Check if the current customer is greedy.
+     * 
+     * @return true if it is greedy, false otherwise.
      */
     public boolean isGreedy() {
         return (this instanceof GreedyCustomer);
@@ -108,6 +128,7 @@ public class Customer {
 
     /**
      * Setter for time of service.
+     * 
      * @param timeOfService the timeOfService to set
      */
     public void setTimeOfService(double timeOfService) {
@@ -116,6 +137,7 @@ public class Customer {
 
     /**
      * Setter for service duration.
+     * 
      * @param durationOfService the durationOfService to set
      */
     public void setDurationOfService(double durationOfService) {
