@@ -6,7 +6,19 @@ import java.util.ArrayList;
 
 /**
  * The main logic for processing events. It implements two main
- * functions: initialization and processing events in a functional way.
+ * functionalities: initialization and processing events in a functional way.
+ * 
+ * <p>When processing and generating the <code>Event</code>, this simulator
+ * always creates a new instance of <code>Event</code> because the 
+ * <code>Event</code> class is immutable.
+ * 
+ * <p>However, since customers and servers should be stateful, 
+ * and it looks necessary for servers to include a queue of customers, 
+ * and <code>ServerEvent</code> has to depend on <code>Server</code>, 
+ * we change the internal state of a <code>Server</code> in this class 
+ * and pass the server information with <code>Event</code>, 
+ * so that <code>Server</code> doesn't need to depend on <code>ServerEvent</code>
+ * and <code>Customer</code> doesn't need to depend on <code>Server</code>
  * 
  * <p>It has one <code>public static</code> field called randomGenerator, 
  * which is assigned an instance of <code>RandomGenerator</code> with
@@ -94,6 +106,7 @@ public class EventSimulator {
     /**
      * Method to be called when the server is back from rest.
      * 
+     * @param server the server to be back
      * @return a new <code>CustomerEvent</code> of status <code>Event.SERVED</code>
      *          if the server is serving a customer in the waiting queue right
      *          after the break, <code>null</code> otherwise
@@ -246,7 +259,8 @@ public class EventSimulator {
      * @return event to be added, null if there isn't any
      */
     private Event processServedOrDoneEvent(Event currentEvent) {
-        Event toBeAdded = serve(((CustomerEvent) currentEvent).getServer(), (CustomerEvent) currentEvent);
+        Event toBeAdded = serve(((CustomerEvent) currentEvent).getServer(), 
+            (CustomerEvent) currentEvent);
         if (toBeAdded == null) {
             Server currentServer = ((CustomerEvent) currentEvent)
                                     .getServer();

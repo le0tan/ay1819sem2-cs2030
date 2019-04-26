@@ -2,8 +2,6 @@ package cs2030.simulator;
 
 import java.util.function.Supplier;
 
-import cs2030.simulator.GreedyCustomer;
-
 /**
  * Describes the status and basic information of
  * a <code>Customer</code>. 
@@ -13,8 +11,8 @@ import cs2030.simulator.GreedyCustomer;
  * <code>Event</code> instead of <code>Customer</code>. This class 
  * is more like a log for the information about a customer.
  * 
- * <p>It has six private instance fields: timeOfArrival, timeOfService, 
- * durationOfService, customerID and server whose variable
+ * <p>It has five private instance fields: timeOfArrival, timeOfService, 
+ * durationOfService, and customerID whose variable
  * names are self-explanatory. And one Supplier for service time, 
  * which is passed in during the creation of this object, in 
  * <code>EventSimulator</code> class.

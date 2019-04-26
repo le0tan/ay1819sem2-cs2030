@@ -5,8 +5,9 @@ import java.util.function.Supplier;
 import java.util.LinkedList;
 
 /**
- * Server that takes in a <code>CustomerEvent</code>, change its state (if necessary),
- * and output the subsequent event (if any).
+ * Server that stores its own state and the queuing customers.
+ * Expose a group of getters and setters to change its state
+ * in <code>EventSimulator</code>.
  * 
  * <p>It has one <code>public static</code> field: numOfServers that keeps track
  * of the number of servers so that we can assign IDs properly.
@@ -19,9 +20,11 @@ import java.util.LinkedList;
  * (5) a double restingProbability
  * (6) a boolean isResting also indicating its availability
  * 
- * <p>It has one protected field: a boolean needRest, 
- * because <code>SelfCheckoutCounter</code> needs to inherit it 
- * from this class.
+ * <p>It has three protected field: 
+ * (1) a boolean needRest, because <code>SelfCheckoutCounter</code> 
+ * needs to inherit it from this class.
+ * (2) randomRestSupplier
+ * (3) restPeriodSupplier
  * 
  * @author Tan Yuanhong
  */
@@ -83,20 +86,10 @@ public class Server {
         return this.waitingQueue.size() < this.queueLength;
     }
 
-    /**
-     * Getter for server's ID.
-     * 
-     * @return the serverID
-     */
     public int getServerID() {
         return serverID;
     }
 
-    /**
-     * Getter for the current queue length.
-     * 
-     * @return the length of waiting queue
-     */
     public int getQueueLength() {
         return this.waitingQueue.size();
     }
@@ -133,20 +126,10 @@ public class Server {
         this.nextServiceTime = time;
     }
 
-    /**
-     * Getter for <code>isResting</code> property.
-     * 
-     * @return a boolean <code>isResting</code>
-     */
     public boolean isResting() {
         return this.isResting;
     }
 
-    /**
-     * Getter for <code>getBackTime</code> property.
-     * 
-     * @return a boolean <code>getBackTime</code>
-     */
     public double getBackTime() {
         return this.nextServiceTime;
     }
