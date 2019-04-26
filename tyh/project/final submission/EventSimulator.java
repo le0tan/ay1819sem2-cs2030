@@ -107,7 +107,7 @@ public class EventSimulator {
      * Method to be called when the server is back from rest.
      * 
      * @param server the server to be back
-     * @return a new <code>CustomerEvent</code> of status <code>Event.SERVED</code>
+     * @return a new <code>CustomerEvent</code> of status <code>EventType.SERVED</code>
      *          if the server is serving a customer in the waiting queue right
      *          after the break, <code>null</code> otherwise
      */
@@ -242,7 +242,7 @@ public class EventSimulator {
     }
 
     /**
-     * Process BACK event.
+     * Process BACK event and there is no return event for a BACK event.
      * 
      * @param currentEvent the event that's being processed
      * @return event to be added
@@ -327,9 +327,9 @@ public class EventSimulator {
                     toBeAdded = processArriveEvent(currentEvent);
                     break;
                 case LEAVES:
-                    return true;
+                    return true;    // LEAVES event can be ignored
                 case WAITS:
-                    return true;
+                    return true;    // WAITS event can be ignored
                 case BACK:
                     toBeAdded = processBackEvent(currentEvent);
                     break;

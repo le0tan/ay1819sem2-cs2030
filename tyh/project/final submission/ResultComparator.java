@@ -19,7 +19,8 @@ public class ResultComparator implements Comparator<Result> {
 
     /**
      * Compares two events.
-     * @param o1 o1 two events o1, o2 to be compared
+     * @param o1 left event to be compared
+     * @param o2 right event to be compared
      * @return negative if o1 is smaller than o2, 
      *     zero if o1 is equal to o2, 
      *     positive if o1 is greater than o2

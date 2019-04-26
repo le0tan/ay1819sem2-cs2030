@@ -40,6 +40,7 @@ public class Customer {
      * class.
      * 
      * @param time the time of arrival
+     * @param serviceTimeSupplier supplier for the random service time generation
      */
     public Customer(double time, Supplier<Double> serviceTimeSupplier) {
         this.timeOfArrival = time;

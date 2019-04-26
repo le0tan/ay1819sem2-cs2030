@@ -12,19 +12,20 @@ import java.util.LinkedList;
  * <p>It has one <code>public static</code> field: numOfServers that keeps track
  * of the number of servers so that we can assign IDs properly.
  * 
- * <p>It has eight private fields:
+ * <p>It has seven private fields:
  * (1) an int serverID
  * (2) a boolean isServing indicating its availability
  * (3) a double nextServiceTime
  * (4) a Queue waitingQueue with customers in queue
  * (5) a double restingProbability
  * (6) a boolean isResting also indicating its availability
+ * (7) an int queueLength indicating its maximum queue length
  * 
- * <p>It has three protected field: 
+ * <p>It has three protected fields: 
  * (1) a boolean needRest, because <code>SelfCheckoutCounter</code> 
  * needs to inherit it from this class.
- * (2) randomRestSupplier
- * (3) restPeriodSupplier
+ * (2) randomRestSupplier, received from <code>EventSimulator</code> to avoid cyclic dependency
+ * (3) restPeriodSupplier, received from <code>EventSimulator</code> to avoid cyclic dependency
  * 
  * @author Tan Yuanhong
  */

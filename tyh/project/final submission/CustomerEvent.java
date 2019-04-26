@@ -50,6 +50,12 @@ public class CustomerEvent extends Event {
         return new CustomerEvent(this.time, type, this.customer, this.server);
     }
 
+    /**
+     * A functional implementation of setServer.
+     * 
+     * @param server the server involved in this event
+     * @return a new <code>CustomerEvent</code> object with the changed server
+     */
     public CustomerEvent setServer(Server server) {
         return new CustomerEvent(this.time, this.type, this.customer, server);
     }
@@ -64,11 +70,6 @@ public class CustomerEvent extends Event {
         return this.type;
     }
     
-    /**
-     * Getter for the customer.
-     * 
-     * @return the customer involved in the event
-     */
     public Customer getCustomer() {
         return this.customer;
     }
